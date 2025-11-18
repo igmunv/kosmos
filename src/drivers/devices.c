@@ -15,19 +15,89 @@ void device_log(struct dev_info* device) {
     unsigned char x = _get_display_cursor_pos_x(dev);
     unsigned char y = _get_display_cursor_pos_y(dev);
 
+    unsigned char type_fcolor = 7;
+    unsigned char tire_fcolor = 7;
+    unsigned char class_fcolor = 7;
+    unsigned char subclass_fcolor = 7;
+
     // Тип устройства
     if (device->is_pci_dev == 1) {
-        _print_text("pci", 3, x, y, 7, 0, dev);
+
+        _print_text("pci", 3, x, y, type_fcolor, 0, dev);
+
+        x = _get_display_cursor_pos_x(dev);
+        y = _get_display_cursor_pos_y(dev);
+
+        _print_text(" - ", 3, x, y, tire_fcolor, 0, dev);
+
+        unsigned int pci_class_num = 0;
+        unsigned int print_flag = 0;
+
+        for (;;){
+
+            if (pci_class_names[pci_class_num].name == 0) break;
+            if (pci_class_names[pci_class_num].code == device->classcode){
+                x = _get_display_cursor_pos_x(dev);
+                y = _get_display_cursor_pos_y(dev);
+                unsigned int size = strlen(pci_class_names[pci_class_num].name);
+                _print_text(pci_class_names[pci_class_num].name, size, x, y, class_fcolor, 0, dev);
+                print_flag = 1;
+            }
+
+            x = _get_display_cursor_pos_x(dev);
+            y = _get_display_cursor_pos_y(dev);
+
+            pci_class_num++;
+        }
+
+        // Класс не найден
+        if (print_flag == 0){
+            x = _get_display_cursor_pos_x(dev);
+            y = _get_display_cursor_pos_y(dev);
+            _print_text("UNKNOWN", 7, x, y, class_fcolor, 0, dev);
+            _new_line(dev);
+        }
+
+        x = _get_display_cursor_pos_x(dev);
+        y = _get_display_cursor_pos_y(dev);
+
+        _print_text(" - ", 3, x, y, tire_fcolor, 0, dev);
+
+        unsigned int pci_subclass_m_num = 0;
+        for (;;){
+
+            struct subclass_map* subclass_m = pci_subclass_names[pci_subclass_m_num];
+
+            // Конец масива
+            if (pci_subclass_names[pci_subclass_m_num] == 0) break;
+
+            unsigned int pci_subclass_num = 0;
+            for (;;){
+
+                // Конец массива
+                if (subclass_m[pci_subclass_num].name == 0) break;
+
+                if (device->classcode == subclass_m[pci_subclass_num].classcode && device->subclass == subclass_m[pci_subclass_num].subclass){
+                    x = _get_display_cursor_pos_x(dev);
+                    y = _get_display_cursor_pos_y(dev);
+                    unsigned int size = strlen(subclass_m[pci_subclass_num].name);
+                    _print_text(subclass_m[pci_subclass_num].name, size, x, y, subclass_fcolor, 0, dev);
+                }
+
+                pci_subclass_num++;
+            }
+
+            pci_subclass_m_num++;
+        }
+        _new_line(dev);
+
     } else if (device->is_leg_dev == 1) {
-        _print_text("legacy", 6, x, y, 7, 0, dev);
+        _print_text("legacy", 6, x, y, type_fcolor, 0, dev);
         _new_line(dev);
-        return;
     } else if (device->is_virt_dev == 1) {
-        _print_text("virt", 4, x, y, 7, 0, dev);
+        _print_text("virt", 4, x, y, type_fcolor, 0, dev);
         _new_line(dev);
-        return;
     }
-    _new_line(dev);
 }
 
 
