@@ -10,11 +10,11 @@ NS = nasm
 NSFLAGS = -f elf32
 
 LIBS_C := $(shell find src/libs -type f -name '*.c')
-LIBS_S := $(shell find src/libs -type f -name '*.S')
+LIBS_S := $(shell find src/libs -type f -name '*.asm')
 KERNEL_C := $(shell find src/kernel -name *.c)
-KERNEL_S := $(shell find src/kernel -name *.S)
+KERNEL_S := $(shell find src/kernel -name *.asm)
 API_C    := $(shell find src/api -name *.c)
-API_S    := $(shell find src/api -name *.S)
+API_S    := $(shell find src/api -name *.asm)
 
 
 define build-rule
@@ -46,13 +46,13 @@ drivers:
 libs:
 	mkdir -p output/libs
 	$(call build-rule,$(LIBS_C),src/libs,output/libs,.c,.o,$(CC),$(CFLAGS))
-	$(call build-rule,$(LIBS_S),src/libs,output/libs,.S,.o,$(NS),$(NSFLAGS))
+	$(call build-rule,$(LIBS_S),src/libs,output/libs,.asm,.o,$(NS),$(NSFLAGS))
 
 
 kernel:
 	mkdir -p output/kernel/
 	$(call build-rule,$(KERNEL_C),src/kernel,output/kernel,.c,.o,$(CC),$(CFLAGS))
-	$(call build-rule,$(KERNEL_S),src/kernel,output/kernel,.S,.o,$(NS),$(NSFLAGS))
+	$(call build-rule,$(KERNEL_S),src/kernel,output/kernel,.asm,.o,$(NS),$(NSFLAGS))
 
 	$(MAKE) k_api
 
@@ -60,7 +60,7 @@ kernel:
 k_api:
 	mkdir -p output/api/
 	$(call build-rule,$(API_C),src/api,output/api,.c,.o,$(CC),$(CFLAGS))
-	$(call build-rule,$(API_S),src/api,output/api,.S,.o,$(NS),$(NSFLAGS))
+	$(call build-rule,$(API_S),src/api,output/api,.asm,.o,$(NS),$(NSFLAGS))
 
 
 link:
