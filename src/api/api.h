@@ -1,16 +1,26 @@
+// userspace API handler
+
 #ifndef INCL_API
 #define INCL_API
 
-// Обработчики прерываний на ASM
-extern void api_asm_display_handler();
-extern void api_asm_ata_handler();
-extern void api_asm_execute_handler();
 
-// Обработчики прерываний на C
-void api_display_handler();
-void api_ata_handler();
-void api_execute_handler();
+struct syscall_result {
+    unsigned int eax;
+    unsigned int ebx;
+    unsigned int ecx;
+    unsigned int edx;
+    unsigned int esi;
+    unsigned int edi;
+};
 
+
+// Обработчик прерываний на ASM
+extern void api_asm_handler(void);
+
+// Обработчик прерываний на C
+void api_handler();
+
+// Инициализация: обработчик прерывания
 void api_init();
 
 

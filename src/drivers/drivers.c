@@ -1,35 +1,78 @@
 
 #include "drivers.h"
-#include "ata.h"
-#include "../IDT_PIC.h"
+#include "devices.h"
+#include "../libs/device.h"
+#include "../libs/driver.h"
 
-// Обработчики прерываний на ASM
-extern void asm_tick_handler();
-extern void asm_keyboard_handler();
-extern void asm_floppy_handler();
+#include "driver_list.h"
 
-// Инициализация драйверов до включения прерываний
-void drivers_init(){
+#define MAX_DRIVER_COUNT 32
 
-    // Регистрация обработчиков для прерываний
-    IDT_reg_handler(32, 0x08, 0x80 | 0x0E, asm_tick_handler);
-    IDT_reg_handler(33, 0x08, 0x80 | 0x0E, asm_keyboard_handler);
+struct driver_info DRIVERS[MAX_DRIVER_COUNT];
+unsigned int DRIVER_COUNT;
 
-    // Инициализация устройств
-    PIT_init(1000);
+
+// Регистрация драйвера для конкретного устройства
+void driver_registration(struct driver_info* driver, struct dev_info* device){
+    device->driver = driver;
+}
+
+
+// Функция должна найти драйвера, и записать их в DRIVERS
+void drivers_find(){
+
+    // пока что берет просто из статического списка drivers,
+    // который собирается при компиляции
+    DRIVER_COUNT = driver_count;
+    for(int i = 0; i < DRIVER_COUNT; i++){
+        DRIVERS[i] = drivers[i];
+    }
 
 }
 
-// Инициализация драйверов после включения прерываний
-void drivers_init_late(){
 
-    // . Здесь должен быть поиск всех устройств по PCI
-    //   а уже потом их инициализация если устройство определённого типа есть
+// получает подходящий драйвер для устройства. сразу проверяет через init
+int driver_get(struct dev_info* device, struct driver_info** result){
+    //
+    /*
+    Драйвер просто инициализирует устройство, делает прерывания, и всё!
+    дальше уже он просто типо ждёт:
+    когда будет прерывание
+    либо когда юзер-space сделает syscall в ядро, а ядро уже вызовет драйвер
+    **он просто реагирует!**
+    */
 
-    // Ищем диск и добавляем в устройства
-    ata_driver_find_master_disks();
+    for (unsigned int driver_index = 0; driver_index < DRIVER_COUNT; driver_index++){
+        struct driver_info* driver = &DRIVERS[driver_index];
+        if ((driver->classcode == device->classcode) && (driver->subclass == device->subclass)){
+
+            int (*init)(struct dev_info*) = (int (*)(struct dev_info*))(driver->init);
+            int init_result = init(device);
+
+            if (init_result == 1){
+                *result = driver;
+                return 0;
+            }
+
+        }
+    }
+
+    return -1;
+
+}
 
 
+void driver_manager(){
 
-    progloader_init();
+    drivers_find();
+
+    for (unsigned int device_index = 0; device_index < DEVICE_COUNT; device_index++){
+
+        struct driver_info* driver;
+        int dr_get_result = driver_get(&DEVICES_INFO[device_index], &driver);
+        if (dr_get_result == 0)
+            driver_registration(driver, &DEVICES_INFO[device_index]);
+
+    }
+
 }

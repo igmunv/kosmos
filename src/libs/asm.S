@@ -2,7 +2,7 @@ global outb, outw, outl, inb, inw, inl, in_out_wait
 
 global in_ah, in_al, in_bh, in_bl, in_ch, in_cl, in_dh, in_dl
 global in_ax, in_bx, in_cx, in_dx, in_si
-global in_ebx, in_edx, in_esi
+global in_eax, in_ebx, in_ecx, in_edx, in_esi, in_edi
 
 global get_ah, get_al, get_bh, get_bl, get_ch, get_cl, get_dh, get_dl
 global get_ax, get_bx, get_cx, get_dx, get_si
@@ -37,10 +37,8 @@ outw:
 outl:
     push    ebp
     mov     ebp, esp
-    ; [ebp+8] = port (16-bit)
-    ; [ebp+12] = byte (8-bit)
     mov     dx, WORD [ebp+8]
-    mov     eax,  DWORD [ebp+12]
+    mov     eax, DWORD [ebp+12]
     out     dx, eax
     pop     ebp
     ret
@@ -137,8 +135,16 @@ in_si:
 
 ; Write 32-bit registers
 
+in_eax:
+    mov eax, [esp+4]
+    ret
+
 in_ebx:
     mov ebx, [esp+4]
+    ret
+
+in_ecx:
+    mov ecx, [esp+4]
     ret
 
 in_edx:
@@ -147,6 +153,10 @@ in_edx:
 
 in_esi:
     mov esi, [esp+4]
+    ret
+
+in_edi:
+    mov edi, [esp+4]
     ret
 
 ; Read 8-bit registers

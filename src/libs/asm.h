@@ -7,6 +7,7 @@
 extern void outb (unsigned short port, unsigned char byte);
 extern void outw(unsigned short port, unsigned short value);
 extern void outl(unsigned short port, unsigned int value);
+
 extern unsigned char inb (unsigned short port);
 extern unsigned short inw (unsigned short port);
 extern unsigned int inl (unsigned short port);
@@ -31,9 +32,12 @@ extern void in_dx(short word);
 extern void in_si(short word);
 
 // Write in 32-bit registers
-extern void in_ebx(int dword);
-extern void in_edx(int dword);
-extern void in_esi(int dword);
+extern void in_eax(unsigned int dword);
+extern void in_ebx(unsigned int dword);
+extern void in_ecx(unsigned int dword);
+extern void in_edx(unsigned int dword);
+extern void in_esi(unsigned int dword);
+extern void in_edi(unsigned int dword);
 
 // Read from 8-bit registers
 extern unsigned char get_ah();
