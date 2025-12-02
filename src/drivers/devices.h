@@ -6,8 +6,8 @@
 extern struct dev_info DEVICES_INFO[256];
 extern unsigned int DEVICE_COUNT;
 
-void devices_registration();
+void device_registration();
 
-int devices_find();
+int device_manager();
 
 #endif

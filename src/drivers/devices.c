@@ -215,7 +215,7 @@ void devices_legacy_find(){
 }
 
 
-int devices_find(){
+int device_manager(){
 
     unsigned int old_device_count = DEVICE_COUNT;
 

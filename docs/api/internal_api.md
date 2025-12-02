@@ -37,3 +37,9 @@
 | [pic_update_mask](internal_functions.md#pic_update_mask)   | Обновить маску PCI |
 | [intr_enable](internal_functions.md#intr_enable)   | Включить/разрешить прерывания |
 | [intr_disable](internal_functions.md#intr_disable)   | Выключить/запретить прерывания |
+| [pci_config_read_word](internal_functions.md#pci_config_read_word)   | PCI Config Read Word |
+| [pci_config_read_dword](internal_functions.md#pci_config_read_dword)   | PCI Config Read Double Word |
+| [pci_config_write_word](internal_functions.md#pci_config_write_word)   | PCI Config Write Word |
+| [pci_config_get_command](internal_functions.md#pci_config_get_command)   | PCI Config Get Command |
+| [pci_config_get_status](internal_functions.md#pci_config_get_status)   | PCI Config Get Status |
+| [pci_config_set_command](internal_functions.md#pci_config_set_command)   | PCI Config Set Command |

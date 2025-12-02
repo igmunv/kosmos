@@ -16,5 +16,6 @@ void _intr_disable();
 
 
 #include "general_functions.h"
+#include "../drivers/pci/pci.h"
 
 #endif
