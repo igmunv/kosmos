@@ -4,7 +4,6 @@
 #include "../drivers/display.h"
 #include "../libs/shared_memory.h"
 #include "../libs/asm.h"
-#include "../libs/asm.h"
 
 // Обработчик API прерывания дисплея
 void api_display_handler(){
