@@ -127,7 +127,7 @@ void kmain(void){
 	gdt_init();
 
 	// Get Multiboot Info
-	struct multiboot_struct* multiboot_info_addr = get_ebx();
+	struct multiboot_struct* multiboot_info_addr = (struct multiboot_struct*)get_ebx();
 	struct multiboot_struct multiboot_info = *multiboot_info_addr;
 
 	// Shared memory init
