@@ -1,6 +1,9 @@
 #include "api.h"
+#include "../IDT_PIC.h"
 #include "../drivers/ata.h"
+#include "../drivers/display.h"
 #include "../libs/shared_memory.h"
+#include "../libs/asm.h"
 
 // Обработчик API прерывания дисплея
 void api_display_handler(){
@@ -43,7 +46,7 @@ void api_display_handler(){
     // Get current symbol
     else if (command_type == 4){
         offset = get_cx();
-        unsigned char* result = get_ebx();
+        unsigned char* result = (unsigned char*)get_ebx();
         *result = display_get_current_symbol(offset);
     }
 
@@ -63,7 +66,7 @@ void api_ata_handler(){
 
     if (command_type == 0){
         unsigned int lba = get_ebx();
-        unsigned char* result = get_edx();
+        unsigned char* result = (unsigned char*)get_edx();
         ata_driver_read_sector(lba, result);
     }
 

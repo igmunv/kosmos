@@ -1,5 +1,5 @@
-#define INCL_DRIVER_PROGLOADER
 #ifndef INCL_DRIVER_PROGLOADER
+#define INCL_DRIVER_PROGLOADER
 
 struct header_info{
     int sector; // номер сектора
