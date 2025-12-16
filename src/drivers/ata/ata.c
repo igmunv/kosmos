@@ -1,5 +1,3 @@
-#define ATA_BASE 0x1F0
-
 #include "ata.h"
 #include "../../libs/device.h"
 
@@ -62,86 +60,10 @@ void ata_write(unsigned short* src){
 }
 
 
-// Есть ли диск
-// 0 - ok, -1 - not found
-int ata_driver_find_master_disks(){
-
-    // Проверяем подключен ли вообще диск
-
-    outb(ATA_BASE + 6, 0xA0); // Выбираем диск (Master)
-    outb(ATA_BASE + 2, 0);
-    outb(ATA_BASE + 3, 0);
-    outb(ATA_BASE + 4, 0);
-    outb(ATA_BASE + 5, 0);
-    ata_delay();
-    unsigned char status = inb(ATA_BASE + 7); // Читаем подключено ли
-    if (status == 0xFF || status == 0x00){
-        return -1; // нет
-    }
-
-    // Если подключено то ждем пока диск ответит
-    int is_timeout = ata_wait_ready();
-    if (is_timeout == -1){
-        return -1; // timeout
-    }
-
-    // IDENTIFY command
-    outb(ATA_BASE + 7, 0xEC);
-
-    ata_delay();
-
-    // Get status
-    status = inb(ATA_BASE + 7);
-
-    if (status == 0){
-        return -1; // не существует
-    }
-
-
-    // В QEMU не работает
-    // unsigned char lbamid = inb(ATA_BASE + 4);
-    // unsigned char lbahi = inb(ATA_BASE + 5);
-    // if (lbamid == 0 && lbahi == 0){
-    //     return -1; // не является ATA диском
-    // }
-
-
-    if (ata_wait_ready() == -1){
-        return -1;
-    }
-    else{
-        // Читаем IDENTIFY
-        unsigned short ident_buffer[256];
-        ata_read(ident_buffer);
-
-        // Модель диска
-        char model[41];
-
-        // Чтение модели из регистров 27-46
-        for (int i = 27; i <= 46; i++) {
-            model[(i-1)*2] = ident_buffer[i] & 0x00ff;         // Младший байт из регистра
-            model[(i-1)*2 + 1] = (ident_buffer[i] >> 8) & 0x00ff; // Старший байт из регистра
-        }
-
-        // Завершаем строку нулевым символом
-        model[40] = '\0';
-
-        // Количество секторов на диске
-        unsigned int sector_count = (unsigned int)(ident_buffer[60] & 0x0000FFFF) | (unsigned int)((ident_buffer[61] << 16) & 0xFFFF0000);
-
-        // диск, модель, размер модели, кол-во секторов, is_master, тип диска ATA
-        device_reg(1, model, 41, sector_count, 1, 1);
-
-    }
-
-    return 0;
-}
-
-
 // Чтение определенного секотра
 // lba - номер сектора
 // buffer - буффер
-int ata_driver_read_sector(unsigned int lba, unsigned char* buffer) {
+int ata_read_sector(unsigned int lba, unsigned char* buffer) {
 
     // Проверяем и ждем готовность диска
     if (ata_wait_ready() < 0) return -1;
@@ -175,7 +97,7 @@ int ata_driver_read_sector(unsigned int lba, unsigned char* buffer) {
     return ata_get_err();
 }
 
-int ata_driver_write_sector(unsigned int lba, unsigned char* src){
+int ata_write_sector(unsigned int lba, unsigned char* src){
     // Проверяем и ждем готовность диска
     if (ata_wait_ready() < 0) return -1;
 
