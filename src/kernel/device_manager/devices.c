@@ -22,7 +22,7 @@ void device_log(struct dev_info* device) {
     unsigned char subclass_fcolor = 7;
 
     // Тип устройства
-    if (device->is_pci_dev == 1) {
+    if (device->dev_type == DEV_TYPE_PCI) {
 
         _print_text("pci", 3, x, y, type_fcolor, 0, dev);
 
@@ -129,10 +129,10 @@ void device_log(struct dev_info* device) {
             pci_subclass_m_num++;
         }
 
-    } else if (device->is_leg_dev == 1) {
+    } else if (device->dev_type == DEV_TYPE_LEG) {
         _print_text("legacy", 6, x, y, type_fcolor, 0, dev);
-    } else if (device->is_virt_dev == 1) {
-        _print_text("virt", 4, x, y, type_fcolor, 0, dev);
+    } else if (device->dev_type == DEV_TYPE_VIRT) {
+        _print_text("virtual", 7, x, y, type_fcolor, 0, dev);
     }
 
     x = _get_display_cursor_pos_x(dev); y = _get_display_cursor_pos_y(dev); _print_text(" (", 2, x, y, tire_fcolor, 0, dev);
@@ -179,9 +179,7 @@ void devices_virt(){
 
     // display vga text mode
     struct dev_info dev_display;
-    dev_display.is_pci_dev = 0;
-    dev_display.is_virt_dev = 1;
-    dev_display.is_leg_dev = 0;
+    dev_display.dev_type = DEV_TYPE_VIRT;
 
     dev_display.classcode = VIRT_DISPLAY_CONTROLLER;
     dev_display.subclass = VIRT_DISPLAY_VGATEXT;
@@ -199,9 +197,7 @@ void devices_legacy_find(){
 
     // keyboard
     struct dev_info dev_keyb;
-    dev_keyb.is_pci_dev = 0;
-    dev_keyb.is_virt_dev = 0;
-    dev_keyb.is_leg_dev = 1;
+    dev_display.dev_type = DEV_TYPE_LEG;
 
     dev_keyb.classcode = VIRT_KEYBOARD_CONTROLLER;
     dev_keyb.subclass = VIRT_KEYBOARD_LDEV;

@@ -174,7 +174,7 @@ void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int fu
 
     struct dev_info device;
 
-    device.is_pci_dev = 1;
+    device.dev_type == DEV_TYPE_PCI;
 
     device.bus = bus;
     device.dev = dev;

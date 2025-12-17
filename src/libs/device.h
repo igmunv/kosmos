@@ -3,12 +3,16 @@
 
 #define MAX_DEVICE_COUNT 256
 
+enum dev_types{
+    DEV_TYPE_PCI = 0,
+    DEV_TYPE_LEG = 1,
+    DEV_TYPE_VIRT = 2
+};
+
 // Информация о устройстве
 struct dev_info{
 
-    unsigned char is_pci_dev; // 0 or 1
-    unsigned char is_virt_dev; // 0 or 1
-    unsigned char is_leg_dev; // 0 or 1
+    enum dev_types dev_type; // 0 - pci, 1 - legacy, 2 - virtual
 
     unsigned int bus;
     unsigned int dev;

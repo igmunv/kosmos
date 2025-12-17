@@ -1,0 +1,6 @@
+#ifndef INCL_DEVICE_MANAGER
+#define INCL_DEVICE_MANAGER
+
+
+
+#endif
