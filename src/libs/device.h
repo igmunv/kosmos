@@ -4,15 +4,25 @@
 #define MAX_DEVICE_COUNT 256
 
 enum dev_types{
-    DEV_TYPE_PCI = 0,
-    DEV_TYPE_LEG = 1,
-    DEV_TYPE_VIRT = 2
+    DEV_PCI,
+    DEV_TYPE_PCI,
+    DEV_TYPE_LEG,
+    DEV_TYPE_VIRT,
+    DEV_TYPE_COUNT
 };
 
 // Информация о устройстве
 struct dev_info{
 
-    enum dev_types dev_type; // 0 - pci, 1 - legacy, 2 - virtual
+    // заполняются только device manager'ом!
+
+    unsigned int id; // равен индексу в массиве устройств
+    char is_free; // 0 - слот используется, 1 - слот свободен
+
+    // заполняются тем, кто регистрирует
+
+    enum dev_types type; // 0 - pci, 1 - legacy, 2 - virtual
+    struct driver_info* driver;
 
     unsigned int bus;
     unsigned int dev;
@@ -45,8 +55,6 @@ struct dev_info{
     unsigned int bar4;
     unsigned int bar5;
 
-    struct driver_info* driver;
-
 };
 
 
@@ -67,8 +75,9 @@ extern struct subclass_map* pci_subclass_names[];
 
 
 enum virt_class_codes{
-    VIRT_DISPLAY_CONTROLLER                  = 0x20,
-    VIRT_KEYBOARD_CONTROLLER                 = 0x21,
+    VIRT_PCI                                 = 0x0,
+    VIRT_DISPLAY_CONTROLLER                  = 0x1,
+    VIRT_KEYBOARD_CONTROLLER                 = 0x2,
 };
 
 enum virt_display_subclass{

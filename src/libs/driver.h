@@ -38,4 +38,16 @@ enum dfunctype_virt_ps2_keyb{
     GET_KEYBOARD_ALT_PRD
 };
 
+enum dfunctype_virt_pci{
+    PCI_FIND_DEVICES,
+    PCI_CONF_READ_WORD,
+    PCI_CONF_READ_DWORD,
+    PCI_CONF_WRITE_WORD,
+    PCI_CONF_GET_COMMON_HEADER,
+    PCI_CONF_GET_HEADER_0,
+    PCI_CONF_GET_COMMAND,
+    PCI_CONF_GET_STATUS,
+    PCI_CONF_SET_COMMAND
+};
+
 #endif

@@ -1,7 +1,36 @@
 #include "pci.h"
-#include "../devices.h"
 #include "../../libs/asm.h"
 #include "../../libs/device.h"
+#include "../../libs/pci.h"
+#include "../../api/kernel_functions.h"
+
+#define CONFIG_ADDRESS 0xCF8
+#define CONFIG_DATA 0xCFC
+
+
+unsigned short pci_config_read_word(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset);
+unsigned int pci_config_read_dword(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset);
+void pci_config_write_word(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset, unsigned short word);
+struct pci_common_header pci_config_get_common_header(unsigned int bus, unsigned int dev, unsigned int func);
+struct pci_header_0 pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func);
+struct pci_command_register pci_config_get_command(unsigned int bus, unsigned int dev, unsigned int func);
+struct pci_status_register pci_config_get_status(unsigned int bus, unsigned int dev, unsigned int func);
+void pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int func, struct pci_command_register cmd);
+void pci_find_devices();
+
+
+void* pci_funcs[] = {
+    pci_find_devices,
+    pci_config_read_word,
+    pci_config_read_dword,
+    pci_config_write_word,
+    pci_config_get_common_header,
+    pci_config_get_header_0,
+    pci_config_get_command,
+    pci_config_get_status,
+    pci_config_set_command
+};
+
 
 unsigned short pci_config_read_word(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset){
 
@@ -174,7 +203,7 @@ void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int fu
 
     struct dev_info device;
 
-    device.dev_type == DEV_TYPE_PCI;
+    device.type == DEV_TYPE_PCI;
 
     device.bus = bus;
     device.dev = dev;
@@ -209,7 +238,7 @@ void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int fu
 
     device.driver = 0;
 
-    device_registration(&device);
+    devman_register_device(&device);
 
 }
 
@@ -244,4 +273,13 @@ void pci_find_devices(){
             }
         }
     }
+}
+
+
+int pci_init(struct dev_info* device){
+    struct pci_common_header common_header = pci_config_get_common_header(0, 0, 0);
+    if (common_header.vendor_id == 0xFFFF){ // pci не обнаружен
+        return 0;
+    }
+    return 1;
 }

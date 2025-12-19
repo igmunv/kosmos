@@ -101,12 +101,12 @@ void sys_get_ticks(struct registers_struct* args, struct registers_struct* resul
 }
 
 void sys_get_device_count(struct registers_struct* args, struct registers_struct* result){
-    unsigned int count = _get_device_count();
+    unsigned int count = devman_get_device_count();
     result->eax = count;
 }
 
 void sys_get_device_info(struct registers_struct* args, struct registers_struct* result){
-    void* devices = _get_device_info();
+    struct dev_info* devices = devman_get_devices();
     result->eax = (unsigned int)devices;
 }
 

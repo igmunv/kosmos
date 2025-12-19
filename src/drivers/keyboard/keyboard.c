@@ -5,13 +5,18 @@
 #define KEYBOARD_ALT_SCANCODE 56
 
 #include "keyboard.h"
-#include "../drivers.h"
 #include "../../api/kernel_functions.h"
 #include "../../libs/asm.h"
 #include "../../libs/device.h"
 
 // ASM keyboard handler
 extern void asm_keyboard_handler();
+
+void* keyboard_get_buffer(struct dev_info* device);
+unsigned int keyboard_get_buffer_ptr(struct dev_info* device);
+unsigned char keyboard_get_shift_pressed(struct dev_info* device);
+unsigned char keyboard_get_ctrl_pressed(struct dev_info* device);
+unsigned char keyboard_get_alt_pressed(struct dev_info* device);
 
 void* keyboard_funcs[] = {
     keyboard_get_buffer,

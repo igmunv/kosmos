@@ -69,7 +69,7 @@ void kmain(void){
 	// Init API
 	api_init();
 
-	device_manager();
+	devman_find_devices();
 
 	driver_manager();
 

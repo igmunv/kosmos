@@ -43,8 +43,6 @@ unsigned char _get_keyboard_alt_pressed(unsigned int device_index);
 
 unsigned int _get_ticks();
 
-unsigned int _get_device_count();
-
-void* _get_device_info();
+#include "../kernel/device_manager/device_manager.h"
 
 #endif
