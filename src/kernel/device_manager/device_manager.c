@@ -2,7 +2,7 @@
 
 #include "device_manager.h"
 #include "../../api/kernel_functions.h"
-#include "../../libs/memory.h"
+#include "../../libs/array.h"
 
 struct dev_info DEVICES[MAX_DEVICE_COUNT];
 unsigned int DEVICE_NEXT_INDEX;
@@ -10,18 +10,19 @@ unsigned int DEVICE_COUNT;
 unsigned int FREE_SLOTS[MAX_DEVICE_COUNT];
 unsigned int FREE_SLOTS_COUNT;
 
-struct dev_info* PCI;
-struct dev_info* PCI_DEVICES[MAX_DEVICE_COUNT];
+unsigned int PCI = 0;
+unsigned int PCI_DEVICES[MAX_DEVICE_COUNT];
 unsigned int PCI_DEVICE_COUNT;
-struct dev_info* LEG_DEVICES[MAX_DEVICE_COUNT];
+unsigned int LEG_DEVICES[MAX_DEVICE_COUNT];
 unsigned int LEG_DEVICE_COUNT;
-struct dev_info* VIRT_DEVICES[MAX_DEVICE_COUNT];
+unsigned int VIRT_DEVICES[MAX_DEVICE_COUNT];
 unsigned int VIRT_DEVICE_COUNT;
 
 // Регистрация устройства. Возвращает индекс устройства
 int devman_register_device(struct dev_info* device){
 
-    unsigned int id;
+    unsigned int id; // id и index устройства в DEVICES
+
     if (FREE_SLOTS_COUNT > 0){
         id = FREE_SLOTS[FREE_SLOTS_COUNT-1];
         device->id = id;
@@ -38,29 +39,63 @@ int devman_register_device(struct dev_info* device){
         DEVICE_NEXT_INDEX++;
         DEVICE_COUNT++;
     }
+
+    switch(device->type){
+        case DEV_PCI:
+            PCI = id;
+            break;
+        case DEV_TYPE_PCI:
+            PCI_DEVICES[PCI_DEVICE_COUNT] = id;
+            PCI_DEVICE_COUNT++;
+            break;
+        case DEV_TYPE_LEG:
+            LEG_DEVICES[LEG_DEVICE_COUNT] = id;
+            LEG_DEVICE_COUNT++;
+            break;
+        case DEV_TYPE_VIRT:
+            VIRT_DEVICES[VIRT_DEVICE_COUNT] = id;
+            VIRT_DEVICE_COUNT++;
+            break;
+    }
+
     return id;
 }
 
 // Удаление устройства.
 void devman_unregister_device(unsigned int id){
-    DEVICES[id]->is_free = 1;
+
+    DEVICES[id].is_free = 1;
     FREE_SLOTS[FREE_SLOTS_COUNT] = id;
     FREE_SLOTS_COUNT++;
     DEVICE_COUNT--;
+
+    switch(DEVICES[id].type){
+        case DEV_TYPE_PCI:
+            array_uint32_remove_element_by_value(PCI_DEVICES, &PCI_DEVICE_COUNT, id);
+            break;
+        case DEV_TYPE_LEG:
+            array_uint32_remove_element_by_value(LEG_DEVICES, &LEG_DEVICE_COUNT, id);
+            break;
+        case DEV_TYPE_VIRT:
+            array_uint32_remove_element_by_value(VIRT_DEVICES, &VIRT_DEVICE_COUNT, id);
+            break;
+    }
 }
 
-// Получение массива с устройствами
+// Получение адреса массива со всеми устройствами
 struct dev_info* devman_get_devices(){
-    return &DEVICES;
+    return DEVICES;
 }
 
-// Получение устройств по типу. Возвращает количесто, в result указатель на массив устройств
-unsigned int devman_get_devices_by_type(enum dev_types type, struct dev_info** result){
+// Получение общего количества устройств
+unsigned int devman_get_device_count(){
+    return DEVICE_COUNT;
+}
+
+// Получение устройств по типу. Возвращает количество, в result указатель на массив индексов устройств
+unsigned int devman_get_devices_by_type(enum dev_types type, unsigned int** result){
 
     switch(type){
-        case DEV_PCI:
-            *result = PCI;
-            return 1;
         case DEV_TYPE_PCI:
             *result = PCI_DEVICES;
             return PCI_DEVICE_COUNT;
@@ -71,34 +106,46 @@ unsigned int devman_get_devices_by_type(enum dev_types type, struct dev_info** r
             *result = VIRT_DEVICES;
             return VIRT_DEVICE_COUNT;
         default:
-            return -1; // unknown type
+            *result = 0;
+            return 0; // unknown type
     }
 }
 
-// Получение количества устройств
-unsigned int devman_get_device_count(){
-    return DEVICE_COUNT;
+// Получение устройства по идентификатору. Возвращает адрес на устройство
+struct dev_info* devman_get_device_by_id(unsigned int id){
+    return &(DEVICES[id]);
+}
+
+void devman_pci_bus_reg(){
+    // PCI
+    struct dev_info dev_pci = {0};
+    dev_pci.dev_type = DEV_PCI;
+    devman_register_device(&dev_pci);
 }
 
 void devman_find_virtual_devices(){
-    // PCI
     // display vga text mode
-    struct dev_info dev_display;
+    struct dev_info dev_display = {0};
     dev_display.dev_type = DEV_TYPE_VIRT;
-
     dev_display.classcode = VIRT_DISPLAY_CONTROLLER;
     dev_display.subclass = VIRT_DISPLAY_VGATEXT;
-    dev_display.vendor_id = 0;
-    dev_display.device_id = 0;
-
-    dev_display.driver = 0;
-
     devman_register_device(&dev_display);
 }
 
 void devman_find_legacy_devices(){
     // PIT
+    struct dev_info dev_pit = {0};
+    dev_pit.dev_type = DEV_TYPE_LEG;
+    dev_pit.classcode = LEG_PIT;
+    dev_pit.subclass = 0;
+    devman_register_device(&dev_pit);
+
     // ps/2 keyboard
+    struct dev_info dev_keyb = {0};
+    dev_keyb.dev_type = DEV_TYPE_LEG;
+    dev_keyb.classcode = LEG_PS2;
+    dev_keyb.subclass = LEG_PS2_keyboard;
+    devman_register_device(&dev_keyb);
 }
 
 unsigned int devman_find_devices(){
@@ -107,8 +154,11 @@ unsigned int devman_find_devices(){
     DEVICE_NEXT_INDEX = 0;
     FREE_SLOTS_COUNT = 0;
 
+    devman_pci_bus_reg();
     devman_find_virtual_devices();
     devman_find_legacy_devices();
-    _pci_find_devices(PCI->id);
+    _pci_find_devices(PCI);
+
+    return DEVICE_COUNT;
 
 }

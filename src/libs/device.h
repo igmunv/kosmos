@@ -21,7 +21,7 @@ struct dev_info{
 
     // заполняются тем, кто регистрирует
 
-    enum dev_types type; // 0 - pci, 1 - legacy, 2 - virtual
+    enum dev_types type;
     struct driver_info* driver;
 
     unsigned int bus;
@@ -57,18 +57,22 @@ struct dev_info{
 
 };
 
+enum leg_class_codes{
+    LEG_PIT = 0x0,
+    LEG_PS2 = 0x1
+}
+
+enum leg_ps2_subclass{
+    LEG_PS2_keyboard = 0x0,
+    LEG_PS2_mouse = 0x1,
+};
+
 enum virt_class_codes{
-    VIRT_PCI                                 = 0x0,
-    VIRT_DISPLAY_CONTROLLER                  = 0x1,
-    VIRT_KEYBOARD_CONTROLLER                 = 0x2,
+    VIRT_DISPLAY_CONTROLLER                  = 0x0
 };
 
 enum virt_display_subclass{
     VIRT_DISPLAY_VGATEXT                     = 0x0,
-};
-
-enum virt_keyboard_subclass{
-    VIRT_KEYBOARD_LDEV                       = 0x0,
 };
 
 
