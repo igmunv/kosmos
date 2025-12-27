@@ -2,6 +2,7 @@
 
 #include "device_manager.h"
 #include "../../api/kernel_functions.h"
+#include "../../libs/device.h"
 #include "../../libs/array.h"
 
 struct dev_info DEVICES[MAX_DEVICE_COUNT];
@@ -119,17 +120,28 @@ struct dev_info* devman_get_device_by_id(unsigned int id){
     return &(DEVICES[id]);
 }
 
+// Возвращает указатель на первое устройство, подходящее под параметры, или 0, если не найдено
+struct dev_info* devman_get_first_device_by_specs(enum dev_types type, char classcode, char subclass){
+    for (unsigned int i = 0; i < DEVICE_COUNT; i++){
+        struct dev_info* device = &DEVICES[i];
+        if (device->is_free) continue;
+        if (device->type == type && device->classcode == classcode && device->subclass == subclass)
+            return device;
+    }
+    return 0;
+}
+
 void devman_pci_bus_reg(){
     // PCI
     struct dev_info dev_pci = {0};
-    dev_pci.dev_type = DEV_PCI;
+    dev_pci.type = DEV_PCI;
     devman_register_device(&dev_pci);
 }
 
 void devman_find_virtual_devices(){
     // display vga text mode
     struct dev_info dev_display = {0};
-    dev_display.dev_type = DEV_TYPE_VIRT;
+    dev_display.type = DEV_TYPE_VIRT;
     dev_display.classcode = VIRT_DISPLAY_CONTROLLER;
     dev_display.subclass = VIRT_DISPLAY_VGATEXT;
     devman_register_device(&dev_display);
@@ -138,14 +150,14 @@ void devman_find_virtual_devices(){
 void devman_find_legacy_devices(){
     // PIT
     struct dev_info dev_pit = {0};
-    dev_pit.dev_type = DEV_TYPE_LEG;
+    dev_pit.type = DEV_TYPE_LEG;
     dev_pit.classcode = LEG_PIT;
     dev_pit.subclass = 0;
     devman_register_device(&dev_pit);
 
     // ps/2 keyboard
     struct dev_info dev_keyb = {0};
-    dev_keyb.dev_type = DEV_TYPE_LEG;
+    dev_keyb.type = DEV_TYPE_LEG;
     dev_keyb.classcode = LEG_PS2;
     dev_keyb.subclass = LEG_PS2_keyboard;
     devman_register_device(&dev_keyb);

@@ -64,22 +64,6 @@ void api_handler(){
             sys_delete_current_symbol(&args, &result);
             break;
 
-        case 0x10:
-            sys_read_sector(&args, &result);
-            break;
-
-        case 0x11:
-            sys_write_sector(&args, &result);
-            break;
-
-        case 0x50:
-            sys_execute_program(&args, &result);
-            break;
-
-        case 0x100:
-            sys_get_execute_program(&args, &result);
-            break;
-
         case 0x101:
             sys_get_keyboard_buffer(&args, &result);
             break;

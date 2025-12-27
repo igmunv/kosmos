@@ -3,6 +3,7 @@
 
 #define DRIVER_FUNC_COUNT 16
 
+#include "device.h"
 
 struct driver_info {
 

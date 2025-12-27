@@ -5,11 +5,6 @@
 #include "../libs/device.h"
 #include "../libs/driver.h"
 
-#include "../kernel/kernel.h"
-#include "../kernel/timer.h"
-#include "../drivers/devices.h"
-#include "../drivers/drivers.h"
-
 void _print_text(unsigned char* text, unsigned int size, unsigned char x, unsigned char y, unsigned char font_color, unsigned char bkgr_color, unsigned int device_index){
 
     struct dev_info* devices = devman_get_devices();
@@ -116,22 +111,6 @@ void _set_display_cursor_pos_y(unsigned char y, unsigned int device_index){
     driver_set_display_cursor_pos_y(device, y);
 }
 
-unsigned char _read_sector(unsigned int device_index, unsigned int lba, void* dst){
-
-}
-
-unsigned char _write_sector(unsigned int device_index, unsigned int lba, void* src){
-
-}
-
-void _execute_program(unsigned int program){
-    EXECUTE_PROGRAM = program;
-}
-
-unsigned int _get_execute_program(){
-    return EXECUTE_PROGRAM;
-}
-
 void* _get_keyboard_buffer(unsigned int device_index){
     struct dev_info* devices = devman_get_devices();
     struct dev_info* device = &devices[device_index];
@@ -167,8 +146,9 @@ unsigned char _get_keyboard_alt_pressed(unsigned int device_index){
     return get_keyboard_alt_pressed(device);
 }
 
-
-
-unsigned int _get_ticks(){
-    return TICKS;
+unsigned int _get_ticks(unsigned int device_index){
+    struct dev_info* devices = devman_get_devices();
+    struct dev_info* device = &devices[device_index];
+    unsigned int (*get_ticks)(struct dev_info*) = (unsigned int (*)(struct dev_info*))(device->driver->funcs[0]);
+    return get_ticks(device);
 }

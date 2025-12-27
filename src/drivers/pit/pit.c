@@ -9,7 +9,7 @@
 unsigned int pit_get_ticks(struct dev_info* device);
 
 void* pit_funcs[] = {
-    pit_get_ticks;
+    pit_get_ticks
 };
 
 extern void asm_tick_handler();

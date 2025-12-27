@@ -46,74 +46,7 @@ const unsigned char* PCI_CLASSCODE_NAMES[] = {
     [SIGNAL_PROCESSING_CONTROLLER] = "SIGNAL_PROCESSING_CONTROLLER",
     [PROCESSING_ACCELERATOR] = "PROCESSING_ACCELERATOR",
     [NON_ESSENTIAL_INSTRUMENTATION] = "NON_ESSENTIAL_INSTRUMENTATION",
-}
-
-const unsigned char* PCI_TYPES[][] = {
-    [UNCLASSIFIED] = {
-        []
-    }
-    [STORAGE_CONTROLLER] = {
-        []
-    }
-    [NETWORK_CONTROLLER] = {
-        []
-    }
-    [DISPLAY_CONTROLLER] = {
-        []
-    }
-    [MULTIMEDIA_CONTROLLER] = {
-        []
-    }
-    [MEMORY_CONTROLLER] = {
-        []
-    }
-    [BRIDGE] = {
-        []
-    }
-    [SIMPLE_COMMUNICATION_CONTROLLER] = {
-        []
-    }
-    [BASE_SYSTEM_PERIPHERAL] = {
-        []
-    }
-    [INPUT_DEVICE_CONTROLLER] = {
-        []
-    }
-    [DOCKING_STATION] = {
-        []
-    }
-    [PROCESSOR] = {
-        []
-    }
-    [SERIAL_BUS_CONTROLLER] = {
-        []
-    }
-    [WIRELESS_CONTROLLER] = {
-        []
-    }
-    [INTELLIGENT_CONTROLLER] = {
-        []
-    }
-    [SATELLITE_COMMUNICATION_CONTROLLER] = {
-        []
-    }
-    [ENCRYPTION_CONTROLLER] = {
-        []
-    }
-    [SIGNAL_PROCESSING_CONTROLLER] = {
-        []
-    }
-    [PROCESSING_ACCELERATOR] = {
-        []
-    }
-    [NON_ESSENTIAL_INSTRUMENTATION] = {
-        []
-    }
-    [UNASSIGNED_CLASS] = {
-        []
-    }
-
-}
+};
 
 // возвращает размер строки
 unsigned int get_pci_classcode_name(unsigned char classcode, unsigned char* dst){

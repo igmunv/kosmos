@@ -1,3 +1,6 @@
+#ifndef INCL_LIB_PCI
+#define INCL_LIB_PCI
+
 struct pci_command_register {
     char io_space;
     char memory_space;
@@ -50,3 +53,5 @@ struct pci_header_0{
     unsigned int bar4;
     unsigned int bar5;
 };
+
+#endif

@@ -3,7 +3,7 @@
 
 #include "../libs/driver.h"
 
-extern struct driver_info drivers[];
-extern const unsigned int driver_count;
+extern struct driver_info dl_drivers[];
+extern const unsigned int dl_driver_count;
 
 #endif

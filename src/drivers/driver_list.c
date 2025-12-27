@@ -5,6 +5,7 @@
 
 // - - Includes drivers - -
 #include "pci/pci.h"
+#include "pit/pit.h"
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 

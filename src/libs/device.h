@@ -60,7 +60,7 @@ struct dev_info{
 enum leg_class_codes{
     LEG_PIT = 0x0,
     LEG_PS2 = 0x1
-}
+};
 
 enum leg_ps2_subclass{
     LEG_PS2_keyboard = 0x0,

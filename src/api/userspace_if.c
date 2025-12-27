@@ -41,25 +41,6 @@ void sys_delete_current_symbol(struct registers_struct* args, struct registers_s
     result->eax = (unsigned int)symbol;
 }
 
-void sys_read_sector(struct registers_struct* args, struct registers_struct* result){
-    unsigned char state = _read_sector(args->ebx, args->ecx, args->edx);
-    result->eax = (unsigned int)state;
-}
-
-void sys_write_sector(struct registers_struct* args, struct registers_struct* result){
-    unsigned char state = _write_sector(args->ebx, args->ecx, args->edx);
-    result->eax = (unsigned int)state;
-}
-
-void sys_execute_program(struct registers_struct* args, struct registers_struct* result){
-    _execute_program(args->ebx);
-}
-
-void sys_get_execute_program(struct registers_struct* args, struct registers_struct* result){
-    unsigned int program = _get_execute_program();
-    result->eax = (unsigned int)program;
-}
-
 void sys_get_keyboard_buffer(struct registers_struct* args, struct registers_struct* result){
     void* buffer = _get_keyboard_buffer(args->ebx);
     result->eax = (unsigned int)buffer;

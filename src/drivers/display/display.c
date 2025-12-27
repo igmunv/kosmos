@@ -79,14 +79,19 @@ void display_print_text(struct dev_info* device, unsigned char* text, unsigned i
     DISPLAY_CURSOR_POS_Y = y;
 
     for (int i = 0; i < size; i++){
-        display_print_symbol(text[i], DISPLAY_CURSOR_POS_X, DISPLAY_CURSOR_POS_Y, font_color, bkgr_color);
 
-        if ((x + 1) > display_limit_x_bottom){
-            DISPLAY_CURSOR_POS_Y++;
-            DISPLAY_CURSOR_POS_X = 0;
-        }
+        if (text[i] == '\n') display_new_line(device);
+
         else{
-            DISPLAY_CURSOR_POS_X++;
+            display_print_symbol(text[i], DISPLAY_CURSOR_POS_X, DISPLAY_CURSOR_POS_Y, font_color, bkgr_color);
+
+            if ((x + 1) > display_limit_x_bottom){
+                DISPLAY_CURSOR_POS_Y++;
+                DISPLAY_CURSOR_POS_X = 0;
+            }
+            else{
+                DISPLAY_CURSOR_POS_X++;
+            }
         }
 
     }
