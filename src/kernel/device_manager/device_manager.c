@@ -58,6 +58,9 @@ int devman_register_device(struct dev_info* device){
             break;
     }
 
+    // Поиск драйвера
+    drvman_attach_driver_to_device(&DEVICES[id]);
+
     return id;
 }
 

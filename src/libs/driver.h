@@ -5,9 +5,11 @@
 
 
 struct driver_info {
+
     unsigned char name[16];
     unsigned char filename[16];
 
+    enum dev_types type;
     unsigned char classcode;
     unsigned char subclass;
 

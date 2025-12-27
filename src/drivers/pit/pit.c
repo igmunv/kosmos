@@ -2,8 +2,15 @@
 #define PIT_CH0  0x40
 #define PIT_INPUT_FREQ 1193182UL
 
-#include "timer.h"
-#include "../api/kernel_functions.h"
+#include "pit.h"
+#include "../../api/kernel_functions.h"
+#include "../../libs/device.h"
+
+unsigned int pit_get_ticks(struct dev_info* device);
+
+void* pit_funcs[] = {
+    pit_get_ticks;
+};
 
 extern void asm_tick_handler();
 
@@ -32,11 +39,15 @@ void tick_handler(){
 	outb(0x20, 0x20);
 }
 
-void timer_init(){
+unsigned int pit_get_ticks(struct dev_info* device){
+    return TICKS;
+}
+
+int pit_init(struct dev_info* device){
     PIT_init(1000);
     _intr_disable();
     _pic_update_mask(0, 0, 0);
     _int_reg_handler(32, 0x08, 0x80 | 0x0E, asm_tick_handler);
     _intr_enable();
-
+    return 1;
 }

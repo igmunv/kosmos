@@ -34,4 +34,6 @@ void _pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int fu
 
 #include "general_functions.h"
 
+#include "../kernel/driver_manager/driver_manager.h"
+
 #endif
