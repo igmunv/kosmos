@@ -3,7 +3,9 @@
 
 **Текущая версия:** `0.1.1`
 
-![logo](docs/logo.png)
+<p align="center">
+  <img src="docs/logo.png" width="250" alt="logo">
+</p>
 
 **[🕒 Список изменений](CHANGELOG.md)**
 
