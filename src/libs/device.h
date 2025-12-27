@@ -57,23 +57,6 @@ struct dev_info{
 
 };
 
-
-struct class_map{
-    unsigned int code;
-    unsigned char* name;
-};
-
-struct subclass_map{
-    unsigned int classcode;
-    unsigned int subclass;
-    unsigned char* name;
-};
-
-extern struct class_map pci_class_names[];
-
-extern struct subclass_map* pci_subclass_names[];
-
-
 enum virt_class_codes{
     VIRT_PCI                                 = 0x0,
     VIRT_DISPLAY_CONTROLLER                  = 0x1,
