@@ -46,12 +46,17 @@ struct pci_common_header{
 
 struct pci_header_0{
     struct pci_common_header common_header;
-    unsigned int bar0;
-    unsigned int bar1;
-    unsigned int bar2;
-    unsigned int bar3;
-    unsigned int bar4;
-    unsigned int bar5;
+    struct pci_bar_resource bar_resources[12];
+    char bar_resource_count;
+};
+
+enum PCI_BAR_TYPE { PCI_IO, PCI_MMIO };
+
+struct pci_bar_resource {
+    unsigned long long base;
+    unsigned long long size;
+    enum PCI_BAR_TYPE type;
+    char prefetchable;
 };
 
 #endif

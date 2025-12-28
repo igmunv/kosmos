@@ -3,6 +3,8 @@
 
 #define MAX_DEVICE_COUNT 256
 
+#include "pci.h"
+
 enum dev_types{
     DEV_PCI = 0,
     DEV_TYPE_PCI = 1,
@@ -48,12 +50,8 @@ struct dev_info{
 
     unsigned char bist;
 
-    unsigned int bar0;
-    unsigned int bar1;
-    unsigned int bar2;
-    unsigned int bar3;
-    unsigned int bar4;
-    unsigned int bar5;
+    struct pci_bar_resource bar_resources[12];
+    char bar_resource_count;
 
 };
 

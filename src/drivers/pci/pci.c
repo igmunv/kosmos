@@ -2,6 +2,7 @@
 #include "../../libs/asm.h"
 #include "../../libs/device.h"
 #include "../../libs/pci.h"
+#include "../../libs/memory.h"
 #include "../../api/kernel_functions.h"
 
 #define CONFIG_ADDRESS 0xCF8
@@ -79,6 +80,13 @@ void pci_config_write_word(unsigned int bus, unsigned int dev, unsigned int func
 }
 
 
+void pci_config_write_dword(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset, unsigned int dword) {
+    unsigned int address = (bus << 16) | (dev << 11) | (func << 8) | (offset & 0xFC) | 0x80000000;
+    outl(CONFIG_ADDRESS, address);
+    outl(CONFIG_DATA, dword);
+}
+
+
 struct pci_common_header pci_config_get_common_header(unsigned int bus, unsigned int dev, unsigned int func){
 
     struct pci_common_header header;
@@ -127,15 +135,59 @@ struct pci_common_header pci_config_get_common_header(unsigned int bus, unsigned
 
 
 struct pci_header_0 pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func){
+
     struct pci_common_header common_header = pci_config_get_common_header(bus, dev, func);
-    struct pci_header_0 result;
+    struct pci_header_0 result = {0};
     result.common_header = common_header;
-    result.bar0 = pci_config_read_dword(bus, dev, func, 0x10);
-    result.bar1 = pci_config_read_dword(bus, dev, func, 0x14);
-    result.bar2 = pci_config_read_dword(bus, dev, func, 0x18);
-    result.bar3 = pci_config_read_dword(bus, dev, func, 0x1C);
-    result.bar4 = pci_config_read_dword(bus, dev, func, 0x20);
-    result.bar5 = pci_config_read_dword(bus, dev, func, 0x24);
+
+    char is64bit_flag = 0;
+    for (int bar_index = 0; bar_index < 6; bar_index++){
+
+        unsigned char bar_offset = 0x10+(bar_index*4);
+        unsigned int bar = pci_config_read_dword(bus, dev, func, bar_offset);
+        unsigned char bar_type = (unsigned char)(bar & 0x00000001);
+
+        if (is64bit_flag){
+            is64bit_flag = 0;
+            result.bar_resources[result.bar_resource_count].base |= ((unsigned long long)bar) << 32;
+            result.bar_resource_count++;
+            continue;
+        }
+
+        unsigned int orig_bar = bar;
+        pci_config_write_dword(bus, dev, func, bar_offset, 0xFFFFFFFF);
+        unsigned int size_low = pci_config_read_dword(bus, dev, func, bar_offset);
+        pci_config_write_dword(bus, dev, func, orig_bar); // восстановление
+
+        unsigned long long size = 0;
+        if (bar_type == 1) { // I/O
+            size = ~(size_low & ~0x3) + 1;
+        } else { // MMIO
+            size = ~(size_low & ~0xF) + 1;
+        }
+        result.bar_resources[result.bar_resource_count].size = size;
+
+        // i/o bar
+        if (bar_type == 1){
+            unsigned int io_base = bar & ~0x3;
+            result.bar_resources[result.bar_resource_count].type = PCI_IO;
+            result.bar_resources[result.bar_resource_count].base = io_base;
+        }
+        // mmio bar
+        else if (bar_type == 0){
+            unsigned char bar_mmio_type = (unsigned char)((bar & 0x00000006) >> 1);
+            unsigned char bar_mmio_prefetchable = (unsigned char)((bar & 0x00000008) >> 3);
+            result.bar_resources[result.bar_resource_count].type = PCI_MMIO;
+            result.bar_resources[result.bar_resource_count].prefetchable = bar_mmio_prefetchable;
+            result.bar_resources[result.bar_resource_count].base = bar & ~0xF;
+
+            if (bar_mmio_type == 0b10){
+                is64bit_flag = 1;
+                continue;
+            }
+        }
+        result.bar_resource_count++;
+    }
     return result;
 }
 
@@ -229,14 +281,8 @@ void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int fu
 
     device.bist = header.common_header.bist;
 
-    device.bar0 = header.bar0;
-    device.bar1 = header.bar1;
-    device.bar2 = header.bar2;
-    device.bar3 = header.bar3;
-    device.bar4 = header.bar4;
-    device.bar5 = header.bar5;
-
-    device.driver = 0;
+    memcpy(device.bar_resources, header.bar_resources, sizeof(struct pci_bar_resource)*12);
+    device.bar_resource_count = header.bar_resource_count;
 
     devman_register_device(&device);
 
