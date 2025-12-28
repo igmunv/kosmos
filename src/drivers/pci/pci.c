@@ -157,7 +157,7 @@ struct pci_header_0 pci_config_get_header_0(unsigned int bus, unsigned int dev, 
         unsigned int orig_bar = bar;
         pci_config_write_dword(bus, dev, func, bar_offset, 0xFFFFFFFF);
         unsigned int size_low = pci_config_read_dword(bus, dev, func, bar_offset);
-        pci_config_write_dword(bus, dev, func, orig_bar); // восстановление
+        pci_config_write_dword(bus, dev, func, bar_offset, orig_bar); // восстановление
 
         unsigned long long size = 0;
         if (bar_type == 1) { // I/O

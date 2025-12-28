@@ -136,6 +136,6 @@ int ata_write_sector(unsigned int lba, unsigned char* src){
 
 
 int ata_init(struct dev_info* device){
-    // panic("ata", "test");
+    panic("ata", "test");
     return 1;
 }

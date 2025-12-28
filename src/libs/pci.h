@@ -44,12 +44,6 @@ struct pci_common_header{
     unsigned char bist;
 };
 
-struct pci_header_0{
-    struct pci_common_header common_header;
-    struct pci_bar_resource bar_resources[12];
-    char bar_resource_count;
-};
-
 enum PCI_BAR_TYPE { PCI_IO, PCI_MMIO };
 
 struct pci_bar_resource {
@@ -58,5 +52,13 @@ struct pci_bar_resource {
     enum PCI_BAR_TYPE type;
     char prefetchable;
 };
+
+struct pci_header_0{
+    struct pci_common_header common_header;
+    struct pci_bar_resource bar_resources[12];
+    char bar_resource_count;
+};
+
+
 
 #endif
