@@ -3,7 +3,6 @@
 
 extern struct dev_info;
 extern void* ata_funcs[];
-
 int ata_init(struct dev_info* device);
 
 #endif

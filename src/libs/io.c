@@ -17,7 +17,7 @@ void kput(unsigned char* text){
 
         unsigned char x = _get_display_cursor_pos_x(vga->id);
         unsigned char y = _get_display_cursor_pos_y(vga->id);
-        _print_text(text, size, x, y, fcolor, 7, vga->id);
+        _print_text(text, size, x, y, 7, 0, vga->id);
         _cursor_update(vga->id);
     }
 }

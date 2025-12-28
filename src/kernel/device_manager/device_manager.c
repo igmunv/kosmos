@@ -135,7 +135,11 @@ void devman_pci_bus_reg(){
     // PCI
     struct dev_info dev_pci = {0};
     dev_pci.type = DEV_PCI;
-    devman_register_device(&dev_pci);
+    int pci_id = devman_register_device(&dev_pci);
+    if (DEVICES[pci_id].driver == 0){
+        panic("devman_pci_bus_reg", "not found driver");
+    }
+
 }
 
 void devman_find_virtual_devices(){
@@ -172,7 +176,7 @@ unsigned int devman_find_devices(){
     devman_pci_bus_reg();
     devman_find_virtual_devices();
     devman_find_legacy_devices();
-    _pci_find_devices(PCI);
+    if (DEVICES[PCI].type == DEV_PCI && DEVICES[PCI].driver != 0) _pci_find_devices(PCI);
 
     return DEVICE_COUNT;
 

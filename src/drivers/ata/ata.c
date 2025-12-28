@@ -1,6 +1,8 @@
 #include "ata.h"
 #include "../../libs/device.h"
+#include "../../api/kernel_functions.h"
 
+#define ATA_BASE 1
 
 void* ata_funcs[] = {
 
@@ -134,5 +136,6 @@ int ata_write_sector(unsigned int lba, unsigned char* src){
 
 
 int ata_init(struct dev_info* device){
-
+    // panic("ata", "test");
+    return 1;
 }

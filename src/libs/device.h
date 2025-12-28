@@ -4,10 +4,10 @@
 #define MAX_DEVICE_COUNT 256
 
 enum dev_types{
-    DEV_PCI,
-    DEV_TYPE_PCI,
-    DEV_TYPE_LEG,
-    DEV_TYPE_VIRT,
+    DEV_PCI = 0,
+    DEV_TYPE_PCI = 1,
+    DEV_TYPE_LEG = 2,
+    DEV_TYPE_VIRT = 3,
     DEV_TYPE_COUNT
 };
 

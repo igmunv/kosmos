@@ -201,9 +201,9 @@ void pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int fun
 
 void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int func, struct pci_header_0 header){
 
-    struct dev_info device;
+    struct dev_info device = {0};
 
-    device.type == DEV_TYPE_PCI;
+    device.type = DEV_TYPE_PCI;
 
     device.bus = bus;
     device.dev = dev;

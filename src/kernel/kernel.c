@@ -37,6 +37,8 @@ __attribute__((section(".kernel_loop"))) void kernel_loop(void) {
 	}
 }
 
+
+
 void logo(){
 	kclear();
 	const int delay = 50;
@@ -135,12 +137,12 @@ void kmain(void){
 	devman_find_devices();
 
 	// log
-	kput("Device Manager: ", 7);
+	kput("Device Manager: ");
 	unsigned char dev_count_str[10];
 	int str_size = itos(devman_get_device_count(), dev_count_str);
 	dev_count_str[str_size] = '\0';
-	kput(dev_count_str, 7);
-	kput(" devices detected.\n", 7);
+	kput(dev_count_str);
+	kput(" devices detected.\n");
 
 	int found_drivers = 0;
 	struct dev_info* devs = devman_get_devices();
@@ -149,12 +151,12 @@ void kmain(void){
 			found_drivers++;
 	}
 
-	kput("Driver Manager: ", 7);
+	kput("Driver Manager: ");
 	unsigned char drv_count_str[10];
 	str_size = itos(found_drivers, drv_count_str);
 	drv_count_str[str_size] = '\0';
-	kput(drv_count_str, 7);
-	kput(" drivers successfully attached.\n", 7);
+	kput(drv_count_str);
+	kput(" drivers successfully attached.\n");
 
 	logo();
 
