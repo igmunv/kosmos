@@ -22,6 +22,13 @@ void kput(unsigned char* text){
     }
 }
 
+void kprinti(long number){
+    unsigned char str[10];
+    int str_size = itos(number, str);
+    str[str_size] = '\0';
+    kput(str);
+}
+
 // print в котором можно управлять цветами
 void kprintс(unsigned char* text, unsigned char font, unsigned char bckg){
     struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);

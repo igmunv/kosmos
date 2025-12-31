@@ -1,0 +1,6 @@
+#ifndef INCL_MEMORY_MANAGER
+#define INCL_MEMORY_MANAGER
+
+
+
+#endif

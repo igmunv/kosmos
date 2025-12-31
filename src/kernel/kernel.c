@@ -56,7 +56,7 @@ void logo(){
 	kprintс("@@@@@@    @@@@@@@     \n", 11, 0);time_sleep(delay);
 	kprintс("@@@@@@      @@@@@@@   \n", 11, 0);time_sleep(delay);
 	kprintс("@@@@@@        @@@@@@@ \n", 1, 0);time_sleep(delay);
-	kprintс("\n", 15);time_sleep(delay);
+	kprintс("\n", 15, 0);time_sleep(delay);
 
 	kprintсp("@@@@@@@@@@@@             @      ", 0, 5, 15, 0, 0);
 	kprintсp("@@@@@@@@@@@            @@@@@    ", 0, 6, 15, 0, 0);
@@ -103,7 +103,7 @@ void logo(){
 	kprintсp("@@@@@@@@@@@@   @      ", 0, 7, 15, 0, 0);
 	time_sleep(text_delay);
 
-	kprintсp("\n", 0, 13, 15, 0);
+	kprintсp("\n", 0, 13, 15, 0, 1);
 	kprintс("K ", 15, 0);
 	time_sleep(delay);
 	kprintс("O ", 15, 0);

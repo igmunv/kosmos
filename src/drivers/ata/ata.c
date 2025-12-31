@@ -2,6 +2,8 @@
 #include "../../libs/device.h"
 #include "../../api/kernel_functions.h"
 
+#include "../../libs/io.h"
+
 #define ATA_BASE 1
 
 void* ata_funcs[] = {
@@ -136,6 +138,32 @@ int ata_write_sector(unsigned int lba, unsigned char* src){
 
 
 int ata_init(struct dev_info* device){
+
+    unsigned int primary_io_base, primary_ctrl_base;
+    unsigned int secondary_io_base, secondary_ctrl_base;
+
+    unsigned char primary_prog_if   = device->prog_if & 0x0F; // низкие 4 бита
+    unsigned char secondary_prog_if = (device->prog_if >> 4) & 0x0F; // высокие 4 бита
+
+    // Primary
+    if (primary_prog_if == 0x0) { // Legacy
+        primary_io_base = 0x1F0;
+        primary_ctrl_base = 0x3F6;
+    } else { // Native PCI
+        primary_io_base = device->bar_resources[0].base;
+        primary_ctrl_base = device->bar_resources[1].base;
+    }
+
+    // Secondary
+    if (secondary_prog_if == 0x0) { // Legacy
+        secondary_io_base = 0x170;
+        secondary_ctrl_base = 0x376;
+    } else { // Native PCI
+        secondary_io_base = device->bar_resources[2].base;
+        secondary_ctrl_base = device->bar_resources[3].base;
+    }
+    kprinti(primary_io_base);
+    while(1);
     panic("ata", "test");
     return 1;
 }

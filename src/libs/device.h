@@ -20,6 +20,7 @@ struct dev_info{
 
     unsigned int id; // равен индексу в массиве устройств
     char is_free; // 0 - слот используется, 1 - слот свободен
+    struct dev_info* parrent_device;
 
     // заполняются тем, кто регистрирует
 

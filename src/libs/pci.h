@@ -44,7 +44,10 @@ struct pci_common_header{
     unsigned char bist;
 };
 
-enum PCI_BAR_TYPE { PCI_IO, PCI_MMIO };
+enum PCI_BAR_TYPE {
+    PCI_IO = 0,
+    PCI_MMIO = 1
+};
 
 struct pci_bar_resource {
     unsigned long long base;
