@@ -9,4 +9,4 @@ NSMFLAGS = -f elf32
 
 all:
 	mkdir -p $(OBJ_DIR)
-	# $(CC) $(CFLAGS) -c ata.c -o $(OBJ_DIR)/ata.o
+	$(CC) $(CFLAGS) -c ata.c -o $(OBJ_DIR)/ata.o

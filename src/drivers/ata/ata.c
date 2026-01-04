@@ -3,6 +3,7 @@
 #include "../../api/kernel_functions.h"
 
 #include "../../libs/io.h"
+#include "../../libs/types.h"
 
 #define ATA_BASE 1
 
@@ -139,31 +140,35 @@ int ata_write_sector(unsigned int lba, unsigned char* src){
 
 int ata_init(struct dev_info* device){
 
-    unsigned int primary_io_base, primary_ctrl_base;
-    unsigned int secondary_io_base, secondary_ctrl_base;
+    unsigned long long primary_io_base, primary_ctrl_base;
+    unsigned long long secondary_io_base, secondary_ctrl_base;
 
-    unsigned char primary_prog_if   = device->prog_if & 0x0F; // низкие 4 бита
-    unsigned char secondary_prog_if = (device->prog_if >> 4) & 0x0F; // высокие 4 бита
+    struct pci_header_0_t* devh = (struct pci_header_0_t*)device->adv_info;
 
-    // Primary
-    if (primary_prog_if == 0x0) { // Legacy
-        primary_io_base = 0x1F0;
+    bool primary_native   = (devh->common_header.prog_if & 0x01) != 0;
+    bool secondary_native = (devh->common_header.prog_if & 0x04) != 0;
+
+    if (!primary_native) { // Legacy
+        primary_io_base   = 0x1F0;
         primary_ctrl_base = 0x3F6;
-    } else { // Native PCI
-        primary_io_base = device->bar_resources[0].base;
-        primary_ctrl_base = device->bar_resources[1].base;
+    }
+    else { // PCI native
+        primary_io_base   = devh->bar_resources[0].base;
+        primary_ctrl_base = devh->bar_resources[1].base;
     }
 
-    // Secondary
-    if (secondary_prog_if == 0x0) { // Legacy
-        secondary_io_base = 0x170;
+    if (!secondary_native) { // Legacy
+        secondary_io_base   = 0x170;
         secondary_ctrl_base = 0x376;
-    } else { // Native PCI
-        secondary_io_base = device->bar_resources[2].base;
-        secondary_ctrl_base = device->bar_resources[3].base;
     }
+    else { // PCI native
+        secondary_io_base   = devh->bar_resources[2].base;
+        secondary_ctrl_base = devh->bar_resources[3].base;
+    }
+
     kprinti(primary_io_base);
-    // while(1);
+    kprinti(secondary_io_base);
+    while(1);
     // panic("ata", "test");
     return 1;
 }

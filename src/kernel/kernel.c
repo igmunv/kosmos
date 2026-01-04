@@ -135,10 +135,7 @@ void kmain(void){
 
 	// log
 	kput("Device Manager: ");
-	unsigned char dev_count_str[10];
-	int str_size = itos(devman_get_device_count(), dev_count_str);
-	dev_count_str[str_size] = '\0';
-	kput(dev_count_str);
+	kprinti(devman_get_device_count());
 	kput(" devices detected.\n");
 
 	int found_drivers = 0;
@@ -149,10 +146,7 @@ void kmain(void){
 	}
 
 	kput("Driver Manager: ");
-	unsigned char drv_count_str[10];
-	str_size = itos(found_drivers, drv_count_str);
-	drv_count_str[str_size] = '\0';
-	kput(drv_count_str);
+	kprinti(found_drivers);
 	kput(" drivers successfully attached.\n");
 
 	logo();
