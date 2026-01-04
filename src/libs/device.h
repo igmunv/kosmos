@@ -4,8 +4,9 @@
 #define MAX_DEVICE_COUNT 256
 
 #include "pci.h"
+#include "types.h"
 
-enum dev_types{
+enum dev_con_types{
     DEV_PCI = 0,
     DEV_TYPE_PCI = 1,
     DEV_TYPE_LEG = 2,
@@ -18,41 +19,19 @@ struct dev_info{
 
     // заполняются только device manager'ом!
 
-    unsigned int id; // равен индексу в массиве устройств
-    char is_free; // 0 - слот используется, 1 - слот свободен
-    struct dev_info* parrent_device;
+    unsigned int id; // уникальный идентификатор. равен индексу в массиве устройств
+    bool is_free; // 0 - слот используется, 1 - слот свободен
+    struct dev_info* parrent_dev; // родительское устройство. кто породил
 
     // заполняются тем, кто регистрирует
 
-    enum dev_types type;
-    struct driver_info* driver;
+    enum dev_con_types con_type; // способ подключения, классификация по подключению
+    struct driver_info* driver; // драйвер устройства
 
-    unsigned int bus;
-    unsigned int dev;
-    unsigned int func;
+    uint8_t classcode; // класс устройства
+    uint8_t subclass; // подкласс устройства
 
-    unsigned short vendor_id;
-    unsigned short device_id;
-
-    unsigned short command;
-    unsigned short status;
-
-    unsigned char revision_id;
-    unsigned char prog_if;
-
-    unsigned char subclass;
-    unsigned char classcode;
-
-    unsigned char cache_line_size;
-    unsigned char latency_timer;
-
-    unsigned char mf;
-    unsigned char header_type;
-
-    unsigned char bist;
-
-    struct pci_bar_resource bar_resources[12];
-    char bar_resource_count;
+    void* adv_info; // дополнительная информация
 
 };
 

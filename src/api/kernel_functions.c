@@ -68,11 +68,11 @@ struct pci_common_header _pci_config_get_common_header(unsigned int bus, unsigne
     return driver_pci_config_get_common_header(bus, dev, func);
 }
 
-struct pci_header_0 _pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index){
+struct pci_header_0_t _pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index){
     struct dev_info* devices = devman_get_devices();
     struct dev_info* device = &devices[device_index];
 
-    struct pci_header_0 (*driver_pci_config_get_header_0)(unsigned int, unsigned int, unsigned int) = (struct pci_header_0 (*)(unsigned int, unsigned int, unsigned int))(device->driver->funcs[PCI_CONF_GET_HEADER_0]);
+    struct pci_header_0_t (*driver_pci_config_get_header_0)(unsigned int, unsigned int, unsigned int) = (struct pci_header_0_t (*)(unsigned int, unsigned int, unsigned int))(device->driver->funcs[PCI_CONF_GET_HEADER_0]);
 
     return driver_pci_config_get_header_0(bus, dev, func);
 }

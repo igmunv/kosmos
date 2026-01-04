@@ -27,7 +27,7 @@ int devman_register_device(struct dev_info* device){
     if (FREE_SLOTS_COUNT > 0){
         id = FREE_SLOTS[FREE_SLOTS_COUNT-1];
         device->id = id;
-        device->is_free = 0;
+        device->is_free = false;
         DEVICES[id] = *device;
         DEVICE_COUNT++;
         FREE_SLOTS_COUNT--;
@@ -35,13 +35,13 @@ int devman_register_device(struct dev_info* device){
     else{
         id = DEVICE_NEXT_INDEX;
         device->id = id;
-        device->is_free = 0;
+        device->is_free = false;
         DEVICES[DEVICE_NEXT_INDEX] = *device;
         DEVICE_NEXT_INDEX++;
         DEVICE_COUNT++;
     }
 
-    switch(device->type){
+    switch(device->con_type){
         case DEV_PCI:
             PCI = id;
             break;
@@ -68,12 +68,13 @@ int devman_register_device(struct dev_info* device){
 // Удаление устройства.
 void devman_unregister_device(unsigned int id){
 
-    DEVICES[id].is_free = 1;
+    DEVICES[id].is_free = true;
+    kfree(DEVICES[id].adv_info);
     FREE_SLOTS[FREE_SLOTS_COUNT] = id;
     FREE_SLOTS_COUNT++;
     DEVICE_COUNT--;
 
-    switch(DEVICES[id].type){
+    switch(DEVICES[id].con_type){
         case DEV_TYPE_PCI:
             array_uint32_remove_element_by_value(PCI_DEVICES, &PCI_DEVICE_COUNT, id);
             break;
@@ -96,10 +97,10 @@ unsigned int devman_get_device_count(){
     return DEVICE_COUNT;
 }
 
-// Получение устройств по типу. Возвращает количество, в result указатель на массив индексов устройств
-unsigned int devman_get_devices_by_type(enum dev_types type, unsigned int** result){
+// Получение устройств по типу подключения. Возвращает количество, в result указатель на массив индексов устройств
+unsigned int devman_get_devices_by_con_type(enum dev_con_types con_type, unsigned int** result){
 
-    switch(type){
+    switch(con_type){
         case DEV_TYPE_PCI:
             *result = PCI_DEVICES;
             return PCI_DEVICE_COUNT;
@@ -111,7 +112,7 @@ unsigned int devman_get_devices_by_type(enum dev_types type, unsigned int** resu
             return VIRT_DEVICE_COUNT;
         default:
             *result = 0;
-            return 0; // unknown type
+            return 0; // unknown con_type
     }
 }
 
@@ -121,11 +122,11 @@ struct dev_info* devman_get_device_by_id(unsigned int id){
 }
 
 // Возвращает указатель на первое устройство, подходящее под параметры, или 0, если не найдено
-struct dev_info* devman_get_first_device_by_specs(enum dev_types type, char classcode, char subclass){
+struct dev_info* devman_get_first_device_by_specs(enum dev_con_types con_type, uint8_t classcode, uint8_t subclass){
     for (unsigned int i = 0; i < DEVICE_COUNT; i++){
         struct dev_info* device = &DEVICES[i];
         if (device->is_free) continue;
-        if (device->type == type && device->classcode == classcode && device->subclass == subclass)
+        if (device->con_type == con_type && device->classcode == classcode && device->subclass == subclass)
             return device;
     }
     return 0;
@@ -134,7 +135,7 @@ struct dev_info* devman_get_first_device_by_specs(enum dev_types type, char clas
 void devman_pci_bus_reg(){
     // PCI
     struct dev_info dev_pci = {0};
-    dev_pci.type = DEV_PCI;
+    dev_pci.con_type = DEV_PCI;
     int pci_id = devman_register_device(&dev_pci);
     if (DEVICES[pci_id].driver == 0){
         panic("devman_pci_bus_reg", "not found driver");
@@ -145,7 +146,7 @@ void devman_pci_bus_reg(){
 void devman_find_virtual_devices(){
     // display vga text mode
     struct dev_info dev_display = {0};
-    dev_display.type = DEV_TYPE_VIRT;
+    dev_display.con_type = DEV_TYPE_VIRT;
     dev_display.classcode = VIRT_DISPLAY_CONTROLLER;
     dev_display.subclass = VIRT_DISPLAY_VGATEXT;
     devman_register_device(&dev_display);
@@ -154,14 +155,14 @@ void devman_find_virtual_devices(){
 void devman_find_legacy_devices(){
     // PIT
     struct dev_info dev_pit = {0};
-    dev_pit.type = DEV_TYPE_LEG;
+    dev_pit.con_type = DEV_TYPE_LEG;
     dev_pit.classcode = LEG_PIT;
     dev_pit.subclass = 0;
     devman_register_device(&dev_pit);
 
     // ps/2 keyboard
     struct dev_info dev_keyb = {0};
-    dev_keyb.type = DEV_TYPE_LEG;
+    dev_keyb.con_type = DEV_TYPE_LEG;
     dev_keyb.classcode = LEG_PS2;
     dev_keyb.subclass = LEG_PS2_keyboard;
     devman_register_device(&dev_keyb);
@@ -176,7 +177,7 @@ unsigned int devman_find_devices(){
     devman_pci_bus_reg();
     devman_find_virtual_devices();
     devman_find_legacy_devices();
-    if (DEVICES[PCI].type == DEV_PCI && DEVICES[PCI].driver != 0) _pci_find_devices(PCI);
+    if (DEVICES[PCI].con_type == DEV_PCI && DEVICES[PCI].driver != 0) _pci_find_devices(PCI);
 
     return DEVICE_COUNT;
 

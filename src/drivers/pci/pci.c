@@ -13,7 +13,7 @@ unsigned short pci_config_read_word(unsigned int bus, unsigned int dev, unsigned
 unsigned int pci_config_read_dword(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset);
 void pci_config_write_word(unsigned int bus, unsigned int dev, unsigned int func, unsigned char offset, unsigned short word);
 struct pci_common_header pci_config_get_common_header(unsigned int bus, unsigned int dev, unsigned int func);
-struct pci_header_0 pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func);
+struct pci_header_0_t pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func);
 struct pci_command_register pci_config_get_command(unsigned int bus, unsigned int dev, unsigned int func);
 struct pci_status_register pci_config_get_status(unsigned int bus, unsigned int dev, unsigned int func);
 void pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int func, struct pci_command_register cmd);
@@ -134,10 +134,10 @@ struct pci_common_header pci_config_get_common_header(unsigned int bus, unsigned
 }
 
 
-struct pci_header_0 pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func){
+struct pci_header_0_t pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func){
 
     struct pci_common_header common_header = pci_config_get_common_header(bus, dev, func);
-    struct pci_header_0 result = {0};
+    struct pci_header_0_t result = {0};
     result.common_header = common_header;
 
     char is64bit_flag = 0;
@@ -251,38 +251,23 @@ void pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int fun
 }
 
 
-void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int func, struct pci_header_0 header){
+void pci_device_registration(unsigned int bus, unsigned int dev, unsigned int func, struct pci_header_0_t header){
 
     struct dev_info device = {0};
+    struct pci_header_0_t* pci_header_0 = NULL;
 
-    device.type = DEV_TYPE_PCI;
+    pci_header_0 = kmalloc(sizeof(struct pci_header_0_t));
 
-    device.bus = bus;
-    device.dev = dev;
-    device.func = func;
+    if (pci_header_0 == NULL) panic("pci_device_registration", "kmalloc return null pointer");
 
-    device.vendor_id = header.common_header.vendor_id;
-    device.device_id = header.common_header.device_id;
-
-    device.command = header.common_header.command;
-    device.status = header.common_header.status;
-
-    device.revision_id = header.common_header.revision_id;
-    device.prog_if = header.common_header.prog_if;
+    device.con_type = DEV_TYPE_PCI;
 
     device.subclass = header.common_header.subclass;
     device.classcode = header.common_header.classcode;
 
-    device.cache_line_size = header.common_header.cache_line_size;
-    device.latency_timer = header.common_header.latency_timer;
+    memcpy(pci_header_0, &header, sizeof(struct pci_header_0_t));
 
-    device.mf = header.common_header.mf;
-    device.header_type = header.common_header.header_type;
-
-    device.bist = header.common_header.bist;
-
-    memcpy(device.bar_resources, header.bar_resources, sizeof(struct pci_bar_resource)*12);
-    device.bar_resource_count = header.bar_resource_count;
+    device.adv_info = (void*)pci_header_0;
 
     devman_register_device(&device);
 

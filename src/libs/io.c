@@ -30,7 +30,7 @@ void kprinti(long number){
 }
 
 // print в котором можно управлять цветами
-void kprintс(unsigned char* text, unsigned char font, unsigned char bckg){
+void kprintc(unsigned char* text, unsigned char font, unsigned char bckg){
     struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         unsigned int size = 65534;
@@ -50,7 +50,7 @@ void kprintс(unsigned char* text, unsigned char font, unsigned char bckg){
 }
 
 // print в котором можно управлять позицией и цветами
-void kprintсp(unsigned char* text, unsigned char x, unsigned char y, unsigned char font, unsigned char bckg, char is_cursor_update){
+void kprintcp(unsigned char* text, unsigned char x, unsigned char y, unsigned char font, unsigned char bckg, char is_cursor_update){
     struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         unsigned int size = 65534;

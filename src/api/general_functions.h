@@ -44,5 +44,6 @@ unsigned char _get_keyboard_alt_pressed(unsigned int device_index);
 unsigned int _get_ticks();
 
 #include "../kernel/device_manager/device_manager.h"
+#include "../kernel/memory_manager/memory_manager.h"
 
 #endif

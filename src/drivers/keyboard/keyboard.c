@@ -115,10 +115,6 @@ unsigned char keyboard_get_alt_pressed(struct dev_info* device){
 
 int keyboard_init(struct dev_info* device){
 
-    if (device->revision_id == 89){
-        return 0;
-    }
-
     _intr_disable();
     _pic_update_mask(0, 1, 0);
     _int_reg_handler(33, 0x08, 0x80 | 0x0E, asm_keyboard_handler);

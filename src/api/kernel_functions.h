@@ -26,7 +26,7 @@ void _pci_config_write_word(unsigned int bus, unsigned int dev, unsigned int fun
 
 struct pci_common_header _pci_config_get_common_header(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index);
 
-struct pci_header_0 _pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index);
+struct pci_header_0_t _pci_config_get_header_0(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index);
 
 struct pci_command_register _pci_config_get_command(unsigned int bus, unsigned int dev, unsigned int func, unsigned int device_index);
 

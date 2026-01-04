@@ -163,7 +163,7 @@ int ata_init(struct dev_info* device){
         secondary_ctrl_base = device->bar_resources[3].base;
     }
     kprinti(primary_io_base);
-    while(1);
-    panic("ata", "test");
+    // while(1);
+    // panic("ata", "test");
     return 1;
 }

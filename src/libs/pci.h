@@ -1,6 +1,10 @@
 #ifndef INCL_LIB_PCI
 #define INCL_LIB_PCI
 
+#include "types.h"
+
+#define PCI_BAR_COUNT 12
+
 struct pci_command_register {
     char io_space;
     char memory_space;
@@ -56,10 +60,10 @@ struct pci_bar_resource {
     char prefetchable;
 };
 
-struct pci_header_0{
+typedef struct pci_header_0_t{
     struct pci_common_header common_header;
-    struct pci_bar_resource bar_resources[12];
-    char bar_resource_count;
+    struct pci_bar_resource bar_resources[PCI_BAR_COUNT];
+    uint8_t bar_resource_count;
 };
 
 

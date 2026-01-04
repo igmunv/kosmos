@@ -33,7 +33,7 @@ int drvman_get_device_driver(struct dev_info* device, struct driver_info* result
     for(int driver_index = 0; driver_index < dl_driver_count; driver_index++){
 
         struct driver_info* driver = &dl_drivers[driver_index];
-        if ((driver->type == device->type) && (driver->classcode == device->classcode) && (driver->subclass == device->subclass)){
+        if ((driver->con_type == device->con_type) && (driver->classcode == device->classcode) && (driver->subclass == device->subclass)){
 
             int (*init)(struct dev_info*) = (int (*)(struct dev_info*))(driver->init);
             int init_result = init(device);
