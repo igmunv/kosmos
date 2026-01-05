@@ -60,7 +60,7 @@ struct pci_bar_resource {
     char prefetchable;
 };
 
-typedef struct pci_header_0_t{
+struct pci_header_0_t{
     struct pci_common_header common_header;
     struct pci_bar_resource bar_resources[PCI_BAR_COUNT];
     uint8_t bar_resource_count;
