@@ -9,6 +9,7 @@
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 #include "ata/ata.h"
+#include "ata_drive/ata_drive.h"
 
 // - - Driver list - -
 #define DRIVER_LIST \
@@ -16,7 +17,8 @@
     X(pit_driver, "pit.c", DEV_TYPE_LEG, LEG_PIT, 0, pit_init, pit_funcs) \
     X(keyboard_driver, "keyboard.c", DEV_TYPE_LEG, LEG_PS2, LEG_PS2_keyboard, keyboard_init, keyboard_funcs) \
     X(display_driver, "display.c", DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT, display_init, display_funcs) \
-    X(ata_driver, "ata.c", DEV_TYPE_PCI, STORAGE_CONTROLLER, STORAGE_IDE_CONTROLLER, ata_init, ata_funcs)
+    X(ata_driver, "ata.c", DEV_TYPE_PCI, STORAGE_CONTROLLER, STORAGE_IDE_CONTROLLER, ata_init, ata_funcs) \
+    X(ata_drive_driver, "ata_drive.c", DEV_TYPE_VIRT, VIRT_STORAGE_CONTROLLER, VIRT_STORAGE_ATA_DRIVE, ata_drive_init, ata_drive_funcs)
 
 // - - Template - -
 #define X(name, filename, device_type, classcode, subclass, init, funcs) { #name, filename, device_type, classcode, subclass, init, funcs },

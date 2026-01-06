@@ -46,11 +46,16 @@ enum leg_ps2_subclass{
 };
 
 enum virt_class_codes{
-    VIRT_DISPLAY_CONTROLLER                  = 0x0
+    VIRT_DISPLAY_CONTROLLER                  = 0x0,
+    VIRT_STORAGE_CONTROLLER                  = 0x1
 };
 
 enum virt_display_subclass{
     VIRT_DISPLAY_VGATEXT                     = 0x0,
+};
+
+enum virt_storage_subclass{
+    VIRT_STORAGE_ATA_DRIVE                   = 0x0
 };
 
 
