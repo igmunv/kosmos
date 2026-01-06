@@ -6,6 +6,7 @@
 #include "../../libs/types.h"
 #include "../../libs/ata.h"
 #include "../../libs/asm.h"
+#include "../../libs/string.h"
 
 #define ATA_BASE 1
 
@@ -198,7 +199,7 @@ int ata_write_sector(unsigned int lba, unsigned char* src){
 }
 */
 
-int ata_check_drive(unsigned int base, unsigned int drive){
+int ata_get_identify(unsigned int base, unsigned int drive, struct ata_dev_info* drive_info){
 
     outb(base + REG_DEVICE, drive); // select drive
     in_out_wait();
@@ -223,6 +224,41 @@ int ata_check_drive(unsigned int base, unsigned int drive){
     uint16_t idf_dev_type = identify_buffer[0] | (identify_buffer[1] << 8);
 
     if (idf_dev_type == 0x0000 || idf_dev_type == 0xFFFF) return -1; // нет устройства
+    else if (idf_dev_type & 0x8000) return -1; // ATAPI
+    else drive_info->type = ATA;
+
+    uint16_t w49 = identify_buffer[49*2] | (identify_buffer[49*2+1] << 8);
+    if (!(w49 & (1 << 9))) return -1; // not LBA
+
+    int k = 0;
+    for (int i = 20; i < 40; i += 2) {
+        drive_info->serial_number[k++] = identify_buffer[i + 1];
+        drive_info->serial_number[k++] = identify_buffer[i];
+    }
+    drive_info->serial_number[20] = 0;
+
+    k = 0;
+    for (int i = 54; i < 94; i += 2) {
+        drive_info->model_number[k++] = identify_buffer[i + 1];
+        drive_info->model_number[k++] = identify_buffer[i];
+    }
+    drive_info->model_number[40] = 0;
+
+    drive_info->block_info.sector_count =
+    ((uint32_t)identify_buffer[61*2+1] << 24) |  // старший байт word 61
+    ((uint32_t)identify_buffer[61*2]   << 16) |  // младший байт word 61
+    ((uint32_t)identify_buffer[60*2+1] << 8)  |  // старший байт word 60
+    ((uint32_t)identify_buffer[60*2]);          // младший байт word 60
+
+    uint16_t w106 = identify_buffer[106*2] | (identify_buffer[106*2+1] << 8);
+    drive_info->block_info.sector_size = 512; // по умолчанию
+
+    if (w106 & (1 << 14)) { // valid
+        if (w106 & (1 << 12))
+            drive_info->block_info.sector_size = 4096;
+        else
+            drive_info->block_info.sector_size = 512;
+    }
 
     return 0; // устройство существует
 
@@ -258,21 +294,44 @@ int ata_init(struct dev_info* device){
     }
 
     // Find and register devices
+    uint32_t base;
+    uint32_t drive;
+    for (int i = 0; i < 4; i++){
 
-    if (ata_check_drive(primary_io_base, ATA_MASTER) == 0){
-        kput("primary: master");
-    }
+        switch(i){
+            case 0:
+                base = primary_io_base;
+                drive = ATA_MASTER;
+                break;
+            case 1:
+                base = primary_io_base;
+                drive = ATA_SLAVE;
+                break;
+            case 2:
+                base = secondary_io_base;
+                drive = ATA_MASTER;
+                break;
+            case 3:
+                base = secondary_io_base;
+                drive = ATA_SLAVE;
+                break;
 
-    if (ata_check_drive(primary_io_base, ATA_SLAVE) == 0){
-        kput("primary: slave");
-    }
+        }
 
-    if (ata_check_drive(secondary_io_base, ATA_MASTER) == 0){
-        kput("secondary: master");
-    }
+        struct ata_dev_info* ata_drive = NULL;
+        ata_drive = kmalloc(sizeof(struct ata_dev_info));
+        if (ata_get_identify(base, drive, ata_drive) != 0) continue; // device not found
 
-    if (ata_check_drive(secondary_io_base, ATA_SLAVE) == 0){
-        kput("secondary: slave");
+        kprinti(ata_drive->type);
+        kput("\n");
+        kput(ata_drive->serial_number);
+        kput("\n");
+        kput(ata_drive->model_number);
+        kput("\n");
+        kprinti(ata_drive->block_info.sector_count);
+        kput("\n");
+        kprinti(ata_drive->block_info.sector_size);
+
     }
 
     while(1);

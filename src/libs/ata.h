@@ -2,6 +2,7 @@
 #define INCL_LIB_ATA
 
 #include "block.h"
+#include "types.h"
 
 enum ata_channel_type_enum{
     PRIMARY,
@@ -13,9 +14,15 @@ enum ata_drive_type_enum{
     SLAVE
 };
 
+enum ata_type_enum{
+    ATAPI,
+    ATA
+};
+
 struct ata_dev_info{
-    unsigned char model[41];
-    uint16_t type; // ata or atapi
+    enum ata_type_enum type;
+    uint8_t serial_number[21];
+    uint8_t model_number[41];
     enum ata_channel_type_enum channel_type;
     enum ata_drive_type_enum drive_type;
     struct block_dev_info block_info;
