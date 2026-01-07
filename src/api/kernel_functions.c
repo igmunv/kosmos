@@ -103,3 +103,11 @@ void _pci_config_set_command(unsigned int bus, unsigned int dev, unsigned int fu
 
     driver_pci_config_set_command(bus, dev, func, cmd);
 }
+
+int _mbr_register_disk(struct dev_info* disk_dev){
+    struct dev_info* mbr = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_UNKNOW, VIRT_MBR, 0);
+    if (mbr != 0){
+        int (*driver_mbr_register_disk)(struct dev_info*) = (int (*)(struct dev_info*))(mbr->driver->funcs[0]);
+        return driver_mbr_register_disk(disk_dev);
+    }
+}

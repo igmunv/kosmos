@@ -97,5 +97,11 @@ int ata_write_sector(struct dev_info* device, unsigned int lba, unsigned char* s
 
 
 int ata_drive_init(struct dev_info* device){
+    _mbr_register_disk(device);
     return 1;
 }
+
+int ata_drive_probe(struct dev_info* device){
+    return 1;
+}
+

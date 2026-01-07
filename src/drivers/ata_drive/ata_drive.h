@@ -3,6 +3,7 @@
 
 extern struct dev_info;
 extern void* ata_drive_funcs[];
+int ata_drive_probe(struct dev_info* device);
 int ata_drive_init(struct dev_info* device);
 
 #endif

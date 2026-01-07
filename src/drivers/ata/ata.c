@@ -282,3 +282,8 @@ int ata_init(struct dev_info* device){
 
     return 1;
 }
+
+
+int ata_probe(struct dev_info* device){
+    return 1;
+}

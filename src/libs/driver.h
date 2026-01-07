@@ -14,6 +14,7 @@ struct driver_info {
     unsigned char classcode;
     unsigned char subclass;
 
+    void* probe;
     void* init;
     void** funcs;
 

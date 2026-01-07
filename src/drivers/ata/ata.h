@@ -4,5 +4,6 @@
 extern struct dev_info;
 extern void* ata_funcs[];
 int ata_init(struct dev_info* device);
+int ata_probe(struct dev_info* device);
 
 #endif

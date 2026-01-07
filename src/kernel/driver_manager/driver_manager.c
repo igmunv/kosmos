@@ -20,6 +20,10 @@ int drvman_register_driver(struct driver_info* driver, struct dev_info* device){
     device->driver = &DRIVERS[DRIVER_COUNT];
     DRIVER_COUNT++;
 
+    int (*probe)(struct dev_info*) = (int (*)(struct dev_info*))(driver->probe);
+    int (*init)(struct dev_info*) = (int (*)(struct dev_info*))(driver->init);
+    if (probe != 0) init(device);
+
     return DRIVER_COUNT-1;
 }
 
@@ -35,10 +39,12 @@ int drvman_get_device_driver(struct dev_info* device, struct driver_info* result
         struct driver_info* driver = &dl_drivers[driver_index];
         if ((driver->con_type == device->con_type) && (driver->classcode == device->classcode) && (driver->subclass == device->subclass)){
 
+            int (*probe)(struct dev_info*) = (int (*)(struct dev_info*))(driver->probe);
             int (*init)(struct dev_info*) = (int (*)(struct dev_info*))(driver->init);
-            int init_result = init(device);
-
-            if (init_result == 1){
+            int probe_result = 0;
+            if (probe == 0) probe_result = init(device);
+            else probe_result = probe(device);
+            if (probe_result == 1){
                 *result = *driver;
                 return 1;
             }

@@ -162,27 +162,36 @@ void devman_pci_bus_reg(){
 }
 
 void devman_find_virtual_devices(){
+    // MBR
+    struct dev_info dev_mbr = {
+        .con_type = DEV_TYPE_VIRT,
+        .classcode = VIRT_MBR,
+    };
+    devman_register_device(&dev_mbr);
+
     // display vga text mode
-    struct dev_info dev_display = {0};
-    dev_display.con_type = DEV_TYPE_VIRT;
-    dev_display.classcode = VIRT_DISPLAY_CONTROLLER;
-    dev_display.subclass = VIRT_DISPLAY_VGATEXT;
+    struct dev_info dev_display = {
+        .con_type = DEV_TYPE_VIRT,
+        .classcode = VIRT_DISPLAY_CONTROLLER,
+        .subclass = VIRT_DISPLAY_VGATEXT,
+    };
     devman_register_device(&dev_display);
 }
 
 void devman_find_legacy_devices(){
     // PIT
-    struct dev_info dev_pit = {0};
-    dev_pit.con_type = DEV_TYPE_LEG;
-    dev_pit.classcode = LEG_PIT;
-    dev_pit.subclass = 0;
+    struct dev_info dev_pit = {
+        .con_type = DEV_TYPE_LEG,
+        .classcode = LEG_PIT,
+    };
     devman_register_device(&dev_pit);
 
     // ps/2 keyboard
-    struct dev_info dev_keyb = {0};
-    dev_keyb.con_type = DEV_TYPE_LEG;
-    dev_keyb.classcode = LEG_PS2;
-    dev_keyb.subclass = LEG_PS2_keyboard;
+    struct dev_info dev_keyb = {
+        .con_type = DEV_TYPE_LEG,
+        .classcode = LEG_PS2,
+        .subclass = LEG_PS2_keyboard,
+    };
     devman_register_device(&dev_keyb);
 }
 
