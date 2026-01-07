@@ -14,6 +14,12 @@ enum dev_con_types{
     DEV_TYPE_COUNT
 };
 
+enum dev_types{
+    DEV_BLOCK = 0,
+    DEV_CHAR = 1,
+    DEV_NET = 2,
+};
+
 // Информация о устройстве
 struct dev_info{
 
@@ -26,6 +32,7 @@ struct dev_info{
     // заполняются тем, кто регистрирует
 
     enum dev_con_types con_type; // способ подключения, классификация по подключению
+    enum dev_types type; // тип устройства
     struct driver_info* driver; // драйвер устройства
 
     uint8_t classcode; // класс устройства

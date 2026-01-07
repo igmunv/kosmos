@@ -274,12 +274,11 @@ int ata_init(struct dev_info* device){
         ata_drive.subclass = VIRT_STORAGE_ATA_DRIVE;
         ata_drive.adv_info = (void*)ata_drive_info;
         ata_drive.parrent_dev = device;
+        ata_drive.type = DEV_BLOCK;
 
         devman_register_device(&ata_drive);
 
     }
 
-    while(1);
-    // panic("ata", "test");
     return 1;
 }

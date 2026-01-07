@@ -99,7 +99,6 @@ unsigned int devman_get_device_count(){
 
 // Получение устройств по типу подключения. Возвращает количество, в result указатель на массив индексов устройств
 unsigned int devman_get_devices_by_con_type(enum dev_con_types con_type, unsigned int** result){
-
     switch(con_type){
         case DEV_TYPE_PCI:
             *result = PCI_DEVICES;
@@ -114,6 +113,25 @@ unsigned int devman_get_devices_by_con_type(enum dev_con_types con_type, unsigne
             *result = 0;
             return 0; // unknown con_type
     }
+}
+
+unsigned int devman_get_devices_by_type(enum dev_types type, unsigned int** result){
+    unsigned int count = 0;
+    for (unsigned int i = 0; i < DEVICE_COUNT; i++){
+        struct dev_info* device = &DEVICES[i];
+        if (device->is_free) continue;
+        if (device->type == type) count++;
+    }
+    unsigned int* result_buffer = kmalloc(sizeof(unsigned int)*count);
+    if (result_buffer == NULL) return 0;
+    unsigned int k = 0;
+    for (unsigned int i = 0; i < DEVICE_COUNT; i++){
+        struct dev_info* device = &DEVICES[i];
+        if (device->is_free) continue;
+        if (device->type == type) result_buffer[k++] = i;
+    }
+    *result = result_buffer;
+    return count;
 }
 
 // Получение устройства по идентификатору. Возвращает адрес на устройство
