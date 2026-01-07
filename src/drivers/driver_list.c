@@ -11,6 +11,7 @@
 #include "ata/ata.h"
 #include "ata_drive/ata_drive.h"
 #include "mbr/mbr.h"
+#include "fat/fat.h"
 
 // - - Driver list - -
 #define DRIVER_LIST \
@@ -20,7 +21,8 @@
     X(display_driver, "display.c", DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT, 0, display_init, display_funcs) \
     X(ata_driver, "ata.c", DEV_TYPE_PCI, STORAGE_CONTROLLER, STORAGE_IDE_CONTROLLER, ata_probe, ata_init, ata_funcs) \
     X(ata_drive_driver, "ata_drive.c", DEV_TYPE_VIRT, VIRT_STORAGE_CONTROLLER, VIRT_STORAGE_ATA_DRIVE, ata_drive_probe, ata_drive_init, ata_drive_funcs) \
-    X(mbr_driver, "mbr.c", DEV_TYPE_VIRT, VIRT_MBR, 0, 0, mbr_init, mbr_funcs)
+    X(mbr_driver, "mbr.c", DEV_TYPE_VIRT, VIRT_MBR, 0, 0, mbr_init, mbr_funcs) \
+    X(fat_driver, "fat.c", DEV_TYPE_VIRT, VIRT_PARTITION, 0, 0, fat_init, fat_funcs)
 
 // - - Template - -
 #define X(name, filename, device_type, classcode, subclass, probe, init, funcs) { #name, filename, device_type, classcode, subclass, probe, init, funcs },

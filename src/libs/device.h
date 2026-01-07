@@ -28,10 +28,10 @@ struct dev_info{
 
     unsigned int id; // уникальный идентификатор. равен индексу в массиве устройств
     bool is_free; // 0 - слот используется, 1 - слот свободен
-    struct dev_info* parrent_dev; // родительское устройство. кто породил
 
     // заполняются тем, кто регистрирует
 
+    struct dev_info* parrent_dev; // родительское устройство. кто породил
     enum dev_con_types con_type; // способ подключения, классификация по подключению
     enum dev_types type; // тип устройства
     struct driver_info* driver; // драйвер устройства

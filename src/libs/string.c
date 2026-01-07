@@ -105,11 +105,20 @@ int strlen(char* string){
 // Сравнение строк. Если одинаковые то 1, если разные то 0
 char is_str_equally(unsigned char* str1, unsigned char* str2){
     short str1_len = strlen(str1);
-    for (short n = 0; n <= str1_len; n++){
+    for (short n = 0; n < str1_len; n++){
         unsigned char str1_sym = str1[n];
         unsigned char str2_sym = str2[n];
-        unsigned char xor = str1_sym ^ str2_sym;
-        if (xor != 0 ) return 0;
+        if (str1_sym != str2_sym ) return 0;
+    }
+    return 1;
+}
+
+// Сравнение строк. Если одинаковые то 1, если разные то 0
+int streql(unsigned char* str1, unsigned char* str2, int size){
+    for (int n = 0; n < size; n++){
+        unsigned char str1_sym = str1[n];
+        unsigned char str2_sym = str2[n];
+        if (str1_sym != str2_sym ) return 0;
     }
     return 1;
 }
