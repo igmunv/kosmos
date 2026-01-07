@@ -15,9 +15,10 @@ enum dev_con_types{
 };
 
 enum dev_types{
-    DEV_BLOCK = 0,
-    DEV_CHAR = 1,
-    DEV_NET = 2,
+    DEV_UNKNOW = 0,
+    DEV_BLOCK = 1,
+    DEV_CHAR = 2,
+    DEV_NET = 3,
 };
 
 // Информация о устройстве

@@ -4,7 +4,7 @@
 #include "../api/kernel_functions.h"
 
 void kput(unsigned char* text){
-    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
+    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_UNKNOW, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         unsigned int size = 65534;
 
@@ -31,7 +31,7 @@ void kprinti(long number){
 
 // print в котором можно управлять цветами
 void kprintc(unsigned char* text, unsigned char font, unsigned char bckg){
-    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
+    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_UNKNOW, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         unsigned int size = 65534;
 
@@ -51,7 +51,7 @@ void kprintc(unsigned char* text, unsigned char font, unsigned char bckg){
 
 // print в котором можно управлять позицией и цветами
 void kprintcp(unsigned char* text, unsigned char x, unsigned char y, unsigned char font, unsigned char bckg, char is_cursor_update){
-    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
+    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_UNKNOW, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         unsigned int size = 65534;
 
@@ -69,7 +69,7 @@ void kprintcp(unsigned char* text, unsigned char x, unsigned char y, unsigned ch
 }
 
 void kclear(){
-    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
+    struct dev_info* vga = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_UNKNOW, VIRT_DISPLAY_CONTROLLER, VIRT_DISPLAY_VGATEXT);
     if (vga != 0){
         _clear_display(vga->id);
     }

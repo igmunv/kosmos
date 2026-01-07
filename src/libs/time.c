@@ -4,7 +4,7 @@
 #include "../api/kernel_functions.h"
 
 unsigned int time_get_ticks(){
-    struct dev_info* pit = devman_get_first_device_by_specs(DEV_TYPE_LEG, LEG_PIT, 0);
+    struct dev_info* pit = devman_get_first_device_by_specs(DEV_TYPE_LEG, DEV_UNKNOW, LEG_PIT, 0);
     if (pit != 0)
         _get_ticks(pit->id);
 }

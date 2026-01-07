@@ -140,11 +140,11 @@ struct dev_info* devman_get_device_by_id(unsigned int id){
 }
 
 // Возвращает указатель на первое устройство, подходящее под параметры, или 0, если не найдено
-struct dev_info* devman_get_first_device_by_specs(enum dev_con_types con_type, uint8_t classcode, uint8_t subclass){
+struct dev_info* devman_get_first_device_by_specs(enum dev_con_types con_type, enum dev_types type, uint8_t classcode, uint8_t subclass){
     for (unsigned int i = 0; i < DEVICE_COUNT; i++){
         struct dev_info* device = &DEVICES[i];
         if (device->is_free) continue;
-        if (device->con_type == con_type && device->classcode == classcode && device->subclass == subclass)
+        if (device->type == type && device->con_type == con_type && device->classcode == classcode && device->subclass == subclass)
             return device;
     }
     return 0;

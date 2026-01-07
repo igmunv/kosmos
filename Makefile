@@ -92,6 +92,7 @@ make_iso:
 make_disk:
 	# Make hard disk
 	dd if=/dev/zero of=output/disk.img bs=512 count=20480
+	printf 'text from sector' | dd of=output/disk.img bs=1 seek=0 conv=notrunc
 
 run:
 	qemu-system-i386 -no-reboot -no-shutdown -monitor stdio \
