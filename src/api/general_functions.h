@@ -23,10 +23,6 @@ void _set_display_cursor_pos_x(unsigned char x, unsigned int device_index);
 
 void _set_display_cursor_pos_y(unsigned char y, unsigned int device_index);
 
-unsigned char _read_sector(unsigned int device_index, unsigned int lba, void* dst);
-
-unsigned char _write_sector(unsigned int device_index, unsigned int lba, void* src);
-
 void _execute_program(unsigned int program);
 
 unsigned int _get_execute_program();
@@ -42,6 +38,10 @@ unsigned char _get_keyboard_ctrl_pressed(unsigned int device_index);
 unsigned char _get_keyboard_alt_pressed(unsigned int device_index);
 
 unsigned int _get_ticks();
+
+int _read_sector(unsigned int device_index, unsigned int lba, unsigned char* buffer);
+
+int _write_sector(unsigned int device_index, unsigned int lba, unsigned char* src);
 
 #include "../kernel/device_manager/device_manager.h"
 #include "../kernel/memory_manager/memory_manager.h"

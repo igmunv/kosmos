@@ -152,3 +152,17 @@ unsigned int _get_ticks(unsigned int device_index){
     unsigned int (*get_ticks)(struct dev_info*) = (unsigned int (*)(struct dev_info*))(device->driver->funcs[0]);
     return get_ticks(device);
 }
+
+int _read_sector(unsigned int device_index, unsigned int lba, unsigned char* buffer){
+    struct dev_info* devices = devman_get_devices();
+    struct dev_info* device = &devices[device_index];
+    int (*driver_read_sector)(struct dev_info* device, unsigned int lba, unsigned char* src) = (int (*)(struct dev_info* device, unsigned int lba, unsigned char* src))(device->driver->funcs[0]);
+    return driver_read_sector(device, lba, buffer);
+}
+
+int _write_sector(unsigned int device_index, unsigned int lba, unsigned char* src){
+    struct dev_info* devices = devman_get_devices();
+    struct dev_info* device = &devices[device_index];
+    int (*driver_write_sector)(struct dev_info* device, unsigned int lba, unsigned char* src) = (int (*)(struct dev_info* device, unsigned int lba, unsigned char* src))(device->driver->funcs[1]);
+    return driver_write_sector(device, lba, src);
+}
