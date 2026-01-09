@@ -10,6 +10,11 @@
 #include "../../libs/string.h"
 #include "../../libs/fat12.h"
 
+int vfs_read(unsigned char file_name, unsigned char dst*);
+int vfs_write(unsigned char file_name, unsigned char src*);
+int vfs_readdir(unsigned char dst*);
+int vfs_getpart(unsigned int dst*);
+
 void* fat_funcs[] = {
 
 };
