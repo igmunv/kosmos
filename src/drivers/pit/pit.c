@@ -5,6 +5,7 @@
 #include "pit.h"
 #include "../../api/kernel_functions.h"
 #include "../../libs/device.h"
+#include "../../libs/asm.h"
 
 unsigned int pit_get_ticks(struct dev_info* device);
 

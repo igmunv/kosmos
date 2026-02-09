@@ -10,5 +10,6 @@ void PIC_remap();
 void IDT_reg_handler(int number, unsigned short segm_sel, unsigned short flags, intr_handler handler);
 void IDT_load();
 void PIC_set_mask(unsigned char master, unsigned char slave);
+void PIC_update_mask(unsigned char mst_sl, unsigned char bit, unsigned char value);
 
 #endif

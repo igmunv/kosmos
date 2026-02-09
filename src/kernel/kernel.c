@@ -121,7 +121,7 @@ void logo(){
 void test(){
 	struct dev_info* ata = devman_get_first_device_by_specs(DEV_TYPE_VIRT, DEV_BLOCK, VIRT_STORAGE_CONTROLLER, VIRT_STORAGE_ATA_DRIVE);
 	if (ata != 0){
-		unsigned char* buffer[512] = {0};
+		unsigned char buffer[512] = {0};
 		_read_sector(ata->id, 0, buffer);
 		buffer[50] = 0;
 		kput(buffer);

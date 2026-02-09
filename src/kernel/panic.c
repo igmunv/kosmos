@@ -1,5 +1,6 @@
 #include "panic.h"
 #include "../libs/asm.h"
+#include "../api/kernel_functions.h"
 
 #define VGA_MEM ((volatile unsigned short*)0xB8000)
 #define VGA_COLS 80

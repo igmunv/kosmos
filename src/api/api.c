@@ -3,6 +3,7 @@
 #include "api.h"
 #include "userspace_if.h"
 #include "kernel_functions.h"
+#include "../libs/asm.h"
 
 
 void api_handler(){

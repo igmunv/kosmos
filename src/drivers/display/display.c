@@ -2,6 +2,7 @@
 
 #include "display.h"
 #include "../../libs/device.h"
+#include "../../libs/asm.h"
 
 void display_cursor_update(struct dev_info* device);
 void display_new_line(struct dev_info* device);

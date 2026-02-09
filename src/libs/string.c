@@ -38,7 +38,7 @@ int itos(long i, unsigned char* ret){
          return 1;
     }
 
-    char string[20];
+    unsigned char string[20];
     int s_ptr = 0;
 
     if (i < 0) i = i * -1;
@@ -52,7 +52,7 @@ int itos(long i, unsigned char* ret){
         s_ptr++;
     }
 
-    string_turn_over(&string, s_ptr, &result);
+    string_turn_over(string, s_ptr, result);
 
     if (j < 0){
         ret[0] = '-';
@@ -205,7 +205,7 @@ void ptox(void* ptr, unsigned char* result){
     for (char i = 0; i < 4; i++){
 
         struct byte_split_struct btox_result;
-        long p = ptr;
+        unsigned long p = (unsigned long)ptr;
         btox(p >> (i*8), &btox_result);
 
         result[hp_num] = btox_result.low;

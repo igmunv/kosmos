@@ -8,7 +8,7 @@
 void sys_print_text(struct registers_struct* args, struct registers_struct* result){
 
     _print_text(
-                args->ebx,
+                (unsigned char*)args->ebx,
                 args->ecx,
                 ((args->edx) & 0xFF),
                 ((args->edx >> 8) & 0xFF),

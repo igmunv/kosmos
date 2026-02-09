@@ -23,6 +23,7 @@ int strlen(char* string);
 
 // Сравнение строк. Если одинаковые то 1, если разные то 0
 char is_str_equally(unsigned char* str1, unsigned char* str2);
+int streql(unsigned char* str1, unsigned char* str2, int size);
 
 // String to int. Строку в число
 int stoi(char* string, int* result);

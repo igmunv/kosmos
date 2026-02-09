@@ -1,5 +1,6 @@
 #include "io.h"
 #include "device.h"
+#include "string.h"
 
 #include "../api/kernel_functions.h"
 

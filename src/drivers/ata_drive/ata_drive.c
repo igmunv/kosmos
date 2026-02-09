@@ -6,6 +6,9 @@
 #include "../../libs/io.h"
 #include "../../libs/ata.h"
 #include "../../libs/driver.h"
+#include "../../libs/asm.h"
+
+int _mbr_register_disk(struct dev_info* disk_dev);
 
 int ata_read_sector(struct dev_info* device, unsigned int lba, unsigned char* buffer);
 int ata_write_sector(struct dev_info* device, unsigned int lba, unsigned char* src);
@@ -104,4 +107,3 @@ int ata_drive_init(struct dev_info* device){
 int ata_drive_probe(struct dev_info* device){
     return 1;
 }
-
