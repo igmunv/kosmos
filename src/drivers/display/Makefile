@@ -1,12 +1,8 @@
-DRIVER_NAME = display
-OBJ_DIR = ../../../output/drivers/$(DRIVER_NAME)
+include ../../../common.mk
 
-CC = i386-elf-gcc
-CFLAGS = -w -ffreestanding -m32 -fno-pie -nostdlib
-
-NSM = nasm
-NSMFLAGS = -f elf32
+DRIVER_NAME := display
+OBJ_DIR     := ../../../output/drivers/$(DRIVER_NAME)
 
 all:
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c display.c -o $(OBJ_DIR)/display.o
+	$(CC) $(CFLAGS) -c $(DRIVER_NAME).c -o $(OBJ_DIR)/$(DRIVER_NAME).o
