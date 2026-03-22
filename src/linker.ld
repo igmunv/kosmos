@@ -1,45 +1,33 @@
-ENTRY(kmain)
+ENTRY(_start)
 
 SECTIONS
 {
+    . = 1M;
 
-  /* Для GRUB */
-  .multiboot :{
-    *(.multiboot)
-  }
-
-  /* Основной код и данные ОС */
-  . = 0x10000;
-  .text : {
-    *(.text)
-  }
-
-  .rodata : {
-    *(.rodata*)
-  }
-
-  .data : {
-    *(.data)
-  }
-
-  .bss : {
-    *(.bss)
-    *(COMMON)
-  }
-
-  . = 0x30000;
-    .file_system : {
-        *(.file_system)
+    .text BLOCK(4K) : ALIGN(4K)
+    {
+        KEEP(*(.multiboot))
+        *(.text)
     }
 
+    .rodata BLOCK(4K) : ALIGN(4K)
+    {
+        *(.rodata*)
+    }
 
-  /*
+    .data BLOCK(4K) : ALIGN(4K)
+    {
+        *(.data)
+    }
 
-  .rodata (Read-Only Data) - константы, строки и любые данные, которые НЕ ИЗМЕНЯЮТСЯ во время работы программы.
-  .data (Initialized Data) - переменные, которым присвоено начальное значение.
-  .bss (Uninitialized Data) - переменные без начального значение (не инициализированные или инициализированные нулём).
+    .bss BLOCK(4K) : ALIGN(4K)
+    {
+        *(COMMON)
+        *(.bss)
+    }
 
-  */
-
-
+    .file_system BLOCK(4K) : ALIGN(4K)
+    {
+        *(.file_system)
+    }
 }

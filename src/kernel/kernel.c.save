@@ -1,3 +1,11 @@
+// GRUB header
+__attribute__((section(".multiboot")))
+const unsigned int multiboot_header[] = {
+	0x1BADB002,
+	0,
+	-(0x1BADB002)
+};
+
 // Kernel
 #include "gdt.h"
 #include "IDT_PIC.h"
@@ -9,71 +17,24 @@
 // libs
 #include "../libs/asm.h"
 #include "../libs/io.h"
-#include "../libs/device.h"  // <--- Все константы типа DEV_TYPE_LEG уже здесь!
+#include "../libs/device.h"
 #include "../libs/time.h"
-#include "../drivers/keyboard/keyboard.h"
-
-// Если вдруг DEV_TYPE_VIRT всё еще ругается, добавь только эти (которых нет в device.h):
-#ifndef DEV_TYPE_VIRT
-#define DEV_TYPE_VIRT 1
-#define VIRT_STORAGE_CONTROLLER 0
-#define VIRT_STORAGE_ATA_DRIVE 0
-#endif
 
 unsigned int EXECUTE_PROGRAM = 0;
 
-const char kbd_ascii[] = {
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b',
-    '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',
-    0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0,
-    '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, '*', 0, ' '
-};
-
+// Loop
 __attribute__((section(".kernel_loop"))) void kernel_loop(void) {
+	while(1)
+	{
+		if (EXECUTE_PROGRAM == 0){
 
-    asm("sti"); 
-    
-struct dev_info* kbd_dev = devman_get_first_device_by_specs(DEV_TYPE_LEG, DEV_NET, 0, INPUT_KEYBOARD);
-    if (kbd_dev != 0) {
-        keyboard_init(kbd_dev);
-    }
+		}
 
-    kput("\nKOSMOS Shell Ready\n> "); 
-    
-    static unsigned int my_ptr = 0;
+		else{
 
-    while(1)
-    {
-        
-        unsigned int driver_ptr = keyboard_get_buffer_ptr(0);
-
-        
-        if (my_ptr != driver_ptr) {
-          
-            unsigned char* buffer = (unsigned char*)keyboard_get_buffer(0);
-            unsigned char scancode = buffer[my_ptr];
-
-           
-            if (scancode < sizeof(kbd_ascii)) {
-                char symbol = kbd_ascii[scancode];
-                
-                if (symbol == '\b') {
-                    kput("\b \b"); 
-                } 
-                else if (symbol != 0) {
-                    // Вывод обычной буквы
-                    char str[2] = {symbol, 0}; 
-                    kput(str);
-                }
-            }
-
-           
-            my_ptr = (my_ptr + 1) % 16;
-        }
-
-     
-        time_sleep(5); 
-    }
+			EXECUTE_PROGRAM = 0;
+		}
+	}
 }
 
 

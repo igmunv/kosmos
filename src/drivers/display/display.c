@@ -79,23 +79,30 @@ void display_print_text(struct dev_info* device, unsigned char* text, unsigned i
     DISPLAY_CURSOR_POS_Y = y;
 
     for (int i = 0; i < size; i++){
-
-        if (text[i] == '\n') display_new_line(device);
-
-        else{
+        // Если встретил перенос строки
+        if (text[i] == '\n') {
+            display_new_line(device);
+        }
+        // ЕСЛИ ВСТРЕТИЛ BACKSPACE (стирание)
+        else if (text[i] == '\b') {
+            // Вызываю шаурмечную готовую функцию удаления из этого же файла
+            display_delete_current_symbol(device, 0);
+        }
+        // Если это обычная буква а не шаурма
+        else {
             display_print_symbol(text[i], DISPLAY_CURSOR_POS_X, DISPLAY_CURSOR_POS_Y, font_color, bkgr_color);
 
-            if ((x + 1) > display_limit_x_bottom){
+            if ((DISPLAY_CURSOR_POS_X + 1) > display_limit_x_bottom){
                 DISPLAY_CURSOR_POS_Y++;
                 DISPLAY_CURSOR_POS_X = 0;
             }
-            else{
+            else {
                 DISPLAY_CURSOR_POS_X++;
             }
         }
-
     }
-
+    // В конце всегда обновляем мигающий курсор на экране
+    display_cursor_update(device);
 }
 
 

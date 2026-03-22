@@ -15,21 +15,21 @@ int vfs_mount(struct dev_info* device){
 }
 
 // func vfs_read
-int vfs_read(int part_id, unsigned char file_name, unsigned char dst*){
+int vfs_read(int part_id, unsigned char file_name, unsigned char *dst){
 
 }
 
 // func vfs_write
-int vfs_write(int part_id, unsigned char file_name, unsigned char src*){
+int vfs_write(int part_id, unsigned char file_name, unsigned char *src){
 
 }
 
 // func vfs_readdir
-int vfs_readdir(unsigned char dst*){
+int vfs_readdir(unsigned char *dst){
 
 }
 
 // func vfs_getpart
-int vfs_getpart(unsigned int dst*){
+int vfs_getpart(unsigned int *dst){
 
 }
