@@ -1,0 +1,103 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="Tcowdn_SN5xgzydI_324">
+    <mxGraphModel dx="2017" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Служебный раздел ФС" vertex="1">
+          <mxGeometry height="40" width="720" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Количество файлов" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2 байта" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Доступное место в байтах" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2 байта" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Файловая запись" vertex="1">
+          <mxGeometry height="40" width="720" x="40" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Название файла" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="16 байтов" vertex="1">
+          <mxGeometry height="40" width="160" x="40" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Номер первого сектора" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8 байт" vertex="1">
+          <mxGeometry height="40" width="160" x="200" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="200" width="160" x="110" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-18" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="110" y="760" as="sourcePoint" />
+            <mxPoint x="270" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Данные файла" vertex="1">
+          <mxGeometry height="30" width="60" x="160" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Номер следующего сектора" vertex="1">
+          <mxGeometry height="40" width="130" x="130" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Количество секторов" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-24" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="-120" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1 байт" vertex="1">
+          <mxGeometry height="40" width="160" x="-120" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Флаг: занята ли запись" vertex="1">
+          <mxGeometry height="40" width="160" x="-120" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="504" vertex="1">
+          <mxGeometry height="30" width="80" x="30" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8" vertex="1">
+          <mxGeometry height="40" width="80" x="30" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Что записываем в сектор&amp;nbsp;" vertex="1">
+          <mxGeometry height="60" width="220" x="50" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8 байт" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="160" x="520" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8 байт" vertex="1">
+          <mxGeometry height="40" width="160" x="520" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="u39DgKXfMTbVJSJrMx_y-34" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Размер файла в байтах" vertex="1">
+          <mxGeometry height="40" width="160" x="520" y="400" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

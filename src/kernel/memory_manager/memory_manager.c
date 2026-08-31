@@ -9,7 +9,7 @@
 unsigned char KHEAP[HEAP_SIZE];
 unsigned int KHEAP_PTR = 0;
 
-void* kmalloc(unsigned int size){
+void* kmalloc(unsigned long long size){
     size = ALIGN_UP(size, ALIGN);
     if (size + KHEAP_PTR > HEAP_SIZE) return NULL;
     void* ptr = &KHEAP[KHEAP_PTR];

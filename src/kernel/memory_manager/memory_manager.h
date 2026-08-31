@@ -1,7 +1,7 @@
 #ifndef INCL_MEMORY_MANAGER
 #define INCL_MEMORY_MANAGER
 
-void* kmalloc(unsigned int size);
+void* kmalloc(unsigned long long size);
 void kfree(void* ptr);
 
 #endif

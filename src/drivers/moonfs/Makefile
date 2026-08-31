@@ -1,4 +1,4 @@
-DRIVER_NAME = fat
+DRIVER_NAME = moonfs
 OBJ_DIR = ../../../output/drivers/$(DRIVER_NAME)
 
 CC = i386-elf-gcc
@@ -9,4 +9,4 @@ NSMFLAGS = -f elf32
 
 all:
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c fat.c -o $(OBJ_DIR)/fat.o
+	$(CC) $(CFLAGS) -c moonfs.c -o $(OBJ_DIR)/moonfs.o

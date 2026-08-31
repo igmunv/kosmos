@@ -92,22 +92,10 @@ make_iso:
 make_disk:
 	# Make hard disk
 	dd if=/dev/zero of=output/disk.img bs=512 count=20480
-	sudo parted output/disk.img mklabel msdos
-	sudo parted -a minimal output/disk.img mkpart primary fat16 1MiB 100%
-
-	# подключаем весь образ как loop device
-	LOOP=$$(sudo losetup --show -f output/disk.img); \
-	echo "Loop device: $$LOOP"; \
-	sudo partprobe $$LOOP; \
-	sudo kpartx -av $$LOOP; \
-	sudo mkfs.fat -F16 /dev/mapper/$$(basename $$LOOP)p1; \
-	sudo kpartx -d $$LOOP; \
-	sudo losetup -d $$LOOP; \
-	sudo chown $$(whoami):$$(whoami) output/disk.img
 
 
 run:
-	sudo qemu-system-i386 -no-reboot -no-shutdown -monitor stdio \
+	qemu-system-i386 -no-reboot -no-shutdown -monitor stdio \
 	-drive file=./output/disk.img,format=raw,if=ide,index=0,media=disk \
 	-drive file=output/os.iso,format=raw,if=ide,index=1,media=cdrom \
 	-d int,cpu_reset -D qemu.log \
